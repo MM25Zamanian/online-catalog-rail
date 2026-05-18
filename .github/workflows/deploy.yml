@@ -1,0 +1,88 @@
+name: Deploy Images
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  locales:
+    name: Discover locales
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.locales.outputs.matrix }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Read locales
+        id: locales
+        shell: bash
+        run: |
+          node <<'NODE'
+          const fs = require("fs");
+
+          const source = fs.readFileSync("src/i18n/types.ts", "utf8");
+          const match = source.match(/locales\s*=\s*\[([^\]]+)\]/);
+
+          if (!match) {
+            throw new Error("Could not find locales in src/i18n/types.ts");
+          }
+
+          const locales = [...match[1].matchAll(/['"]([^'"]+)['"]/g)].map(
+            ([, locale]) => locale,
+          );
+
+          if (locales.length === 0) {
+            throw new Error("No locales found in src/i18n/types.ts");
+          }
+
+          fs.appendFileSync(
+            process.env.GITHUB_OUTPUT,
+            `matrix=${JSON.stringify({ locale: locales })}\n`,
+          );
+          NODE
+
+  build:
+    name: Build ${{ matrix.locale }} image
+    runs-on: ubuntu-latest
+    needs: locales
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.locales.outputs.matrix) }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set image metadata
+        id: meta
+        shell: bash
+        run: |
+          echo "image=ghcr.io/${GITHUB_REPOSITORY,,}" >> "$GITHUB_OUTPUT"
+          echo "sha_short=${GITHUB_SHA::12}" >> "$GITHUB_OUTPUT"
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          build-args: |
+            BUILD_LOCALE=${{ matrix.locale }}
+          tags: |
+            ${{ steps.meta.outputs.image }}:latest-${{ matrix.locale }}
+            ${{ steps.meta.outputs.image }}:${{ steps.meta.outputs.sha_short }}-${{ matrix.locale }}
