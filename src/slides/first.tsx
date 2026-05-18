@@ -60,7 +60,7 @@ export function FirstSlide({ brand, copy, children }: FirstSlideProps) {
           </h3>
         </div>
 
-        <div className="relative aspect-[4/3] w-full -mt-[4dvh]">
+        <div className="relative aspect-[4/3] w-full -mt-[12dvh]">
           <div className="bg-radial from-transparent from-40% to-70% to-primary absolute inset-0 z-10"></div>
 
           <Image
@@ -73,7 +73,7 @@ export function FirstSlide({ brand, copy, children }: FirstSlideProps) {
           />
         </div>
 
-        <div className="flex -mt-[1dvh] z-20">
+        <div className="flex -mt-[4dvh] z-20">
           <div className="flex flex-col items-center min-w-22 md:min-w-24 lg:min-w-28">
             <TrainIcon className="size-12 text-secondary" />
 

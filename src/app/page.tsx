@@ -8,7 +8,7 @@ export default function Home() {
   const dictionary = getDictionary();
 
   return (
-    <main className="snap-y snap-mandatory flex flex-col h-screen overflow-y-auto">
+    <main className="snap-y snap-mandatory flex flex-col h-[100svh] overflow-y-auto overscroll-none">
       <FirstSlide
         copy={dictionary.firstSlide}
         brand={dictionary.brand}

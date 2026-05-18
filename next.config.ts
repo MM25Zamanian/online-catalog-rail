@@ -3,6 +3,7 @@ import Icons from "unplugin-icons/webpack";
 
 const nextConfig: NextConfig = {
   output: "export",
+  allowedDevOrigins: ["172.23.168.73"],
   images: {
     unoptimized: true,
   },
@@ -13,7 +14,7 @@ const nextConfig: NextConfig = {
         compiler: "jsx",
         jsx: "react",
         scale: 1,
-      }),
+      })
     );
 
     return config;

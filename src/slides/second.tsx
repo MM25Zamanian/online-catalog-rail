@@ -17,14 +17,14 @@ type SecondSlideProps = {
 
 export function SecondSlide({ copy }: SecondSlideProps) {
   return (
-    <Slide className="bg-primary pt-16">
+    <Slide className="bg-primary pt-10">
       <Image
         src={Logo}
         alt={copy.logoAlt}
         width={400}
         height={400}
         loading="lazy"
-        className="size-28 aspect-square mx-auto"
+        className="size-24 aspect-square mx-auto"
       />
 
       <div className="flex flex-col px-6">
@@ -43,9 +43,7 @@ export function SecondSlide({ copy }: SecondSlideProps) {
               <h2 className="font-black text-sm text-secondary">
                 {copy.officeLabel}
               </h2>
-              <p className="font-bold text-white opacity-80">
-                {copy.office}
-              </p>
+              <p className="font-bold text-white opacity-80">{copy.office}</p>
             </div>
             <div className="flex flex-col">
               <h2 className="font-black text-sm text-secondary">
@@ -58,7 +56,7 @@ export function SecondSlide({ copy }: SecondSlideProps) {
           </div>
         </div>
 
-        <hr className="border-t-secondary border-t-2 opacity-50 my-4" />
+        <hr className="border-t-secondary border-t-2 opacity-50 my-3" />
 
         <div className="flex gap-4">
           <div className="aspect-square p-2 h-12 bg-secondary rounded-lg">
@@ -75,7 +73,7 @@ export function SecondSlide({ copy }: SecondSlideProps) {
           </div>
         </div>
 
-        <hr className="border-t-secondary border-t-2 opacity-50 my-4" />
+        <hr className="border-t-secondary border-t-2 opacity-50 my-3" />
 
         <div className="flex gap-4">
           <div className="aspect-square p-2 h-12 bg-secondary rounded-lg">
@@ -92,9 +90,9 @@ export function SecondSlide({ copy }: SecondSlideProps) {
           </div>
         </div>
 
-        <hr className="border-t-secondary border-t-2 opacity-50 my-4" />
+        <hr className="border-t-secondary border-t-2 opacity-50 my-3" />
 
-        <div className="flex gap-4">
+        <div className="flex gap-4 z-30">
           <div className="aspect-square p-2 h-12 bg-secondary rounded-lg">
             <InstagramIcon className="size-8 text-background" />
           </div>
@@ -107,23 +105,22 @@ export function SecondSlide({ copy }: SecondSlideProps) {
           </div>
         </div>
 
-        <hr className="border-t-secondary border-t-2 opacity-50 my-4" />
+        <hr className="border-t-secondary border-t-2 opacity-50 my-3 z-30" />
 
-        <div className="flex gap-4">
+        <div className="flex gap-4 z-30">
           <div className="aspect-square p-2 h-12 bg-secondary rounded-lg">
             <GlobeIcon className="size-8 text-background" />
           </div>
           <div className="flex flex-col gap-4 pt-4">
             <div className="flex flex-col">
-              <p className="font-bold text-white opacity-80">
-                {copy.website}
-              </p>
+              <p className="font-bold text-white opacity-80">{copy.website}</p>
             </div>
           </div>
         </div>
 
-        <div className="absolute bottom-0 inset-x-0 aspect-[3/1]">
-          <span className="size-px absolute top-0 start-1/2 rounded-full -translate-x-1/2 z-10 shadow-[0_1rem_6rem_4rem_#fff5]" />
+        <div className="absolute bottom-0 inset-x-0 aspect-[3/1] opacity-80">
+          <span className="inset-0 absolute bg-linear-0 from-primary via-transparent to-primary z-20"></span>
+          
           <Image
             src={Rail}
             alt={copy.railImageAlt}

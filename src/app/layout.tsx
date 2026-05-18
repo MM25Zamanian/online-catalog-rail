@@ -22,9 +22,9 @@ export default function RootLayout({
     <html
       lang={locale}
       dir="ltr"
-      className={`${roboto.variable} h-full antialiased`}
+      className={`${roboto.variable} h-full overflow-hidden antialiased`}
     >
-      <body>{children}</body>
+      <body className="h-full overflow-hidden">{children}</body>
     </html>
   );
 }

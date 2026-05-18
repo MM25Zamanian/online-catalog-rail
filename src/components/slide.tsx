@@ -10,7 +10,7 @@ export function Slide({
 }) {
   return (
     <section
-      className={clsx("w-screen h-screen snap-center shrink-0", className)}
+      className={clsx("w-screen h-[100svh] overflow-hidden snap-start snap-always shrink-0", className)}
     >
       <div className="max-w-lg mx-auto h-full w-full flex flex-col relative">{children}</div>
     </section>
