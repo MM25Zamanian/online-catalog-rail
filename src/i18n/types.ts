@@ -50,4 +50,5 @@ export type Dictionary = {
       end: string;
     };
   };
+  fourthSlide: unknown;
 };

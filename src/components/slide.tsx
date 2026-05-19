@@ -8,11 +8,17 @@ export function Slide({
   className?: string;
   children?: ReactNode;
 }) {
+
   return (
     <section
-      className={clsx("w-screen h-[100svh] overflow-hidden snap-start snap-always shrink-0", className)}
+      className={clsx(
+        "w-screen h-[100svh] overflow-hidden snap-center snap-always shrink-0",
+        className
+      )}
     >
-      <div className="max-w-lg mx-auto h-full w-full flex flex-col relative">{children}</div>
+      <div className="max-w-lg mx-auto h-full w-full flex flex-col relative">
+        {children}
+      </div>
     </section>
   );
 }

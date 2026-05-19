@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Roboto } from "next/font/google";
 import { getBuildLocale, getDictionary } from "@/i18n";
 import "./globals.css";
@@ -11,7 +11,17 @@ const roboto = Roboto({
 const locale = getBuildLocale();
 const dictionary = getDictionary();
 
-export const metadata: Metadata = dictionary.metadata;
+export const viewport: Viewport = {
+  themeColor: "#03162a",
+};
+
+export const metadata: Metadata = {
+  ...dictionary.metadata,
+  appleWebApp: {
+    // capable: true,
+    // statusBarStyle: "black-translucent",
+  },
+};
 
 export default function RootLayout({
   children,

@@ -46,7 +46,10 @@ export const dictionaries = {
       office: "Shahid Sadeghi 17, No. 7, Mashhod, Iran",
       otherOfficesLabel: "Other Offices:",
       otherOffices: "Tehran - Bandar Abbas - Sarakhs",
-      mobileNumbers: ["+989152826059 - +989151160448", "+989152826059 - +989151160448"],
+      mobileNumbers: [
+        "+989152826059 - +989151160448",
+        "+989152826059 - +989151160448",
+      ],
       deskphoneNumbers: ["+989152826059 - +989151160448"],
       instagram: "Khaliffarsraillogistic",
       website: "www.khalijfarsrail.com",
@@ -117,7 +120,10 @@ export const dictionaries = {
       office: "Shahid Sadeghi 17, No. 7, Mashhod, Iran",
       otherOfficesLabel: "Diğer Ofisler:",
       otherOffices: "Tehran - Bandar Abbas - Sarakhs",
-      mobileNumbers: ["+989152826059 - +989151160448", "+989152826059 - +989151160448"],
+      mobileNumbers: [
+        "+989152826059 - +989151160448",
+        "+989152826059 - +989151160448",
+      ],
       deskphoneNumbers: ["+989152826059 - +989151160448"],
       instagram: "Khaliffarsraillogistic",
       website: "www.khalijfarsrail.com",
