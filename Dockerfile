@@ -27,7 +27,8 @@ RUN LOCALES="$(node -e "const fs = require('fs'); const source = fs.readFileSync
     case " $LOCALES " in \
       *" $BUILD_LOCALE "*) ;; \
       *) echo "Invalid BUILD_LOCALE \"$BUILD_LOCALE\". Expected one of: $LOCALES." >&2; exit 1 ;; \
-    esac && \
+    esac && \ 
+    pnpm generate:world-map && \
     pnpm build
 
 FROM ghcr.io/gecut/nginx/cdn:latest AS runtime
