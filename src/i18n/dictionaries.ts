@@ -74,6 +74,7 @@ export const dictionaries = {
         end: "BUSINESS FORWARD.",
       },
     },
+    fourthSlide: {},
   },
   tr: {
     metadata: {
@@ -148,5 +149,6 @@ export const dictionaries = {
         end: "İLERİ TAŞIYORUZ.",
       },
     },
+    fourthSlide: {},
   },
 } satisfies Record<Locale, Dictionary>;
