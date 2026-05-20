@@ -10,10 +10,40 @@ import {
   LocationIcon,
   PhoneIcon,
 } from "@/components/icons";
+import { LineBreak } from "@/components/line-break";
+import { Fragment, JSX, ReactNode, SVGProps } from "react";
+import { PhoneNumber } from "@/components/phone-number";
 
 type SecondSlideProps = {
   copy: Dictionary["secondSlide"];
 };
+
+function ContentItem(params: {
+  data: { title: string; content: ReactNode };
+  icon?: (props: SVGProps<SVGSVGElement>) => JSX.Element;
+}) {
+  return (
+    <div className="flex gap-4 z-20 items-center">
+      {params.icon && (
+        <params.icon className="size-6 text-background shrink-0" />
+      )}
+
+      <div className="flex flex-col gap-4">
+        <div className="flex flex-col pe-4" key={params.data.title}>
+          <h2 className="font-bold text-sm opacity-80 text-secondary">
+            {params.data.title}
+          </h2>
+
+          {typeof params.data.content === "string" ? (
+            <p className="text-white opacity-80">{params.data.content}</p>
+          ) : (
+            params.data.content
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export function SecondSlide({ copy }: SecondSlideProps) {
   return (
@@ -27,100 +57,126 @@ export function SecondSlide({ copy }: SecondSlideProps) {
         className="size-24 aspect-square mx-auto"
       />
 
-      <div className="flex flex-col px-6">
-        <div className="w-full relative mt-8 mb-4">
-          <hr className="border-t-secondary border-t-2 opacity-70" />
+      <div className="flex flex-col px-6 gap-6">
+        <LineBreak className="mt-8" />
 
-          <span className="size-3 bg-secondary absolute top-1/2 start-1/2 rounded-full -translate-x-1.5 -translate-y-1.5"></span>
-        </div>
+        <ContentItem
+          icon={LocationIcon}
+          data={{ title: copy.officeLabel, content: copy.office }}
+        />
+        <ContentItem
+          icon={LocationIcon}
+          data={{
+            title: copy.otherOfficesLabel,
+            content: (
+              <div className="flex flex-wrap max-w-72 items-center gap-x-2">
+                {copy.otherOffices.map((address, index, array) => (
+                  <Fragment key={index}>
+                    <span
+                      className="text-white opacity-80 text-nowrap"
+                    >
+                      {address}
+                    </span>
+                    {index < array.length - 1 && (
+                      <span
+                        className="size-1.5 bg-secondary rotate-z-45 opacity-70"
+                      />
+                    )}
+                  </Fragment>
+                ))}
+              </div>
+            ),
+          }}
+        />
 
-        <div className="flex gap-4">
-          <div className="aspect-square p-2 h-12 bg-secondary rounded-lg">
-            <LocationIcon className="size-8 text-background" />
-          </div>
-          <div className="flex flex-col gap-4 pt-1">
-            <div className="flex flex-col pe-4">
-              <h2 className="font-black text-sm text-secondary">
-                {copy.officeLabel}
-              </h2>
-              <p className="font-bold text-white opacity-80">{copy.office}</p>
-            </div>
-            <div className="flex flex-col">
-              <h2 className="font-black text-sm text-secondary">
-                {copy.otherOfficesLabel}
-              </h2>
-              <p className="font-bold text-white opacity-80">
-                {copy.otherOffices}
-              </p>
-            </div>
-          </div>
-        </div>
+        <ContentItem
+          icon={PhoneIcon}
+          data={{
+            title: "Mobile Numbers:",
+            content: (
+              <div className="flex flex-wrap max-w-72 items-center gap-x-2">
+                {copy.mobileNumbers.map((number, index) => (
+                  <Fragment key={index}>
+                    <span
+                      key={index}
+                      className="text-white opacity-80 text-nowrap"
+                    >
+                      <PhoneNumber value={number} clickable />
+                    </span>
+                    {index % 2 === 0 && (
+                      <span
+                        key={"badge-" + index}
+                        className="size-1.5 bg-secondary rotate-z-45 opacity-70"
+                      />
+                    )}
+                  </Fragment>
+                ))}
+              </div>
+            ),
+          }}
+        />
 
-        <hr className="border-t-secondary border-t-2 opacity-50 my-3" />
+        <ContentItem
+          icon={DeskphoneIcon}
+          data={{
+            title: "DeskPhone Numbers:",
+            content: (
+              <div className="flex flex-wrap max-w-72 items-center gap-x-2">
+                {copy.deskphoneNumbers.map((number, index) => (
+                  <Fragment key={index}>
+                    <span className="text-white opacity-80 text-nowrap">
+                      <PhoneNumber value={number} clickable />
+                    </span>
+                    {index % 2 === 0 && (
+                      <span className="size-1.5 bg-secondary rotate-z-45 opacity-70" />
+                    )}
+                  </Fragment>
+                ))}
+              </div>
+            ),
+          }}
+        />
 
-        <div className="flex gap-4">
-          <div className="aspect-square p-2 h-12 bg-secondary rounded-lg">
-            <PhoneIcon className="size-8 text-background" />
-          </div>
-          <div className="flex flex-col gap-4 pt-1">
-            <div className="flex flex-col">
-              {copy.mobileNumbers.map((number, index) => (
-                <p key={index} className="font-bold text-white opacity-80">
-                  {number}
-                </p>
-              ))}
-            </div>
-          </div>
-        </div>
+        <ContentItem
+          icon={InstagramIcon}
+          data={{
+            title: "Instagram:",
+            content: (
+              <a
+                href={"https://instagram.com/" + copy.instagram}
+                target="_blank"
+              >
+                <span className="text-secondary font-black text-sm me-0.5">
+                  @
+                </span>
+                <span className="font-bold uppercase text-white tracking-widest text-xs opacity-70">
+                  {copy.instagram}
+                </span>
+              </a>
+            ),
+          }}
+        />
 
-        <hr className="border-t-secondary border-t-2 opacity-50 my-3" />
-
-        <div className="flex gap-4">
-          <div className="aspect-square p-2 h-12 bg-secondary rounded-lg">
-            <DeskphoneIcon className="size-8 text-background" />
-          </div>
-          <div className="flex flex-col gap-4 pt-4">
-            <div className="flex flex-col">
-              {copy.deskphoneNumbers.map((number, index) => (
-                <p key={index} className="font-bold text-white opacity-80">
-                  {number}
-                </p>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        <hr className="border-t-secondary border-t-2 opacity-50 my-3" />
-
-        <div className="flex gap-4 z-30">
-          <div className="aspect-square p-2 h-12 bg-secondary rounded-lg">
-            <InstagramIcon className="size-8 text-background" />
-          </div>
-          <div className="flex flex-col gap-4 pt-4">
-            <div className="flex flex-col">
-              <p className="font-bold text-white opacity-80">
-                {copy.instagram}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <hr className="border-t-secondary border-t-2 opacity-50 my-3 z-30" />
-
-        <div className="flex gap-4 z-30">
-          <div className="aspect-square p-2 h-12 bg-secondary rounded-lg">
-            <GlobeIcon className="size-8 text-background" />
-          </div>
-          <div className="flex flex-col gap-4 pt-4">
-            <div className="flex flex-col">
-              <p className="font-bold text-white opacity-80">{copy.website}</p>
-            </div>
-          </div>
-        </div>
+        <ContentItem
+          icon={GlobeIcon}
+          data={{
+            title: "Website:",
+            content: (
+              <a href={"https://" + copy.website} target="_blank">
+                <span className="font-bold uppercase text-white tracking-widest text-sm opacity-70">
+                  {copy.website.split(".")[0]}
+                </span>
+                <span className="font-bold lowercase text-white text-xs opacity-70">
+                  .{copy.website.split(".")[1]}
+                </span>
+              </a>
+            ),
+          }}
+        />
 
         <div className="absolute bottom-0 inset-x-0 aspect-[3/1] opacity-80">
           <span className="inset-0 absolute bg-linear-0 from-primary via-transparent to-primary z-20"></span>
-          
+
           <Image
             src={Rail}
             alt={copy.railImageAlt}

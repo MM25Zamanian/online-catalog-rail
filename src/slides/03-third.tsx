@@ -3,6 +3,7 @@ import Image from "next/image";
 import TrafficLights from "#/traffic-lights.webp";
 import { cn } from "@/lib/utils";
 import { getBuildLocale, type Dictionary } from "@/i18n";
+import { LineBreak } from "@/components/line-break";
 
 function ListItem({ content }: { content: string }) {
   return (
@@ -23,19 +24,19 @@ const locale = getBuildLocale();
 export function ThirdSlide({ brand, copy }: ThirdSlideProps) {
   return (
     <Slide className="bg-background">
-      <div className="absolute bottom-0 end-0 w-[20rem] h-[42rem]">
+      <div className="absolute -bottom-2 -end-24 aspect-[1/2] h-[40rem]">
         <Image
           src={TrafficLights}
           alt={copy.trafficLightsAlt}
           fill
           sizes="(max-width: 768px) 100vw, 320px"
           loading="lazy"
-          className="object-cover mix-blend-darken translate-x-20"
+          className="object-cover mix-blend-darken"
         />
 
         <span
           className={cn(
-            "size-10 absolute z-20 top-[19.75%] end-[17.75%] rounded-full",
+            "h-[6%] aspect-square absolute z-20 top-[19.75%] end-[43%] rounded-full",
             "bg-rose-500 mix-blend-overlay shadow-[0_0_1rem_0.5rem_var(--color-rose-500)]",
             "animate-traffic-lights-pulse"
           )}
@@ -43,7 +44,7 @@ export function ThirdSlide({ brand, copy }: ThirdSlideProps) {
 
         <span
           className={cn(
-            "size-10 absolute z-20 top-[26.5%] end-[17.75%] rounded-full",
+            "h-[6%] aspect-square absolute z-20 top-[26.5%] end-[43%] rounded-full",
             "bg-amber-500 mix-blend-overlay shadow-[0_0_1rem_0.5rem_var(--color-amber-500)] ",
             "animate-traffic-lights-pulse delay-1000"
           )}
@@ -51,7 +52,7 @@ export function ThirdSlide({ brand, copy }: ThirdSlideProps) {
 
         <span
           className={cn(
-            "size-10 absolute z-20 top-[33.25%] end-[17.75%] rounded-full",
+            "h-[6%] aspect-square absolute z-20 top-[33.25%] end-[43%] rounded-full",
             "bg-green-500 mix-blend-overlay shadow-[0_0_1rem_0.5rem_var(--color-green-500)] ",
             "animate-traffic-lights-pulse delay-2000"
           )}
@@ -60,27 +61,23 @@ export function ThirdSlide({ brand, copy }: ThirdSlideProps) {
 
       <div className="flex flex-col my-auto w-min px-6">
         <div className="flex flex-col">
-          <h1 className="text-primary text-4xl font-bold uppercase tracking-wider text-nowrap">
+          <h1 className="text-primary text-3xl font-bold uppercase tracking-wider text-nowrap">
             {brand.name} <span className="text-secondary">{brand.accent}</span>
           </h1>
           <h2
             className={cn(
               "text-xs font-bold opacity-70 uppercase text-primary text-nowrap",
-              locale === "en" ? "tracking-[0.325rem]" : "tracking-wide"
+              locale === "en" ? "tracking-[0.175rem]" : "tracking-wide"
             )}
           >
             {brand.subtitle}
           </h2>
         </div>
 
-        <div className="w-full relative my-8">
-          <hr className="border-t-secondary border-t-2 opacity-70" />
-
-          <span className="size-3 bg-secondary absolute top-1/2 start-1/2 rounded-full -translate-x-1.5 -translate-y-1.5"></span>
-        </div>
+        <LineBreak className="my-8" />
 
         <div className="flex flex-col">
-          <h1 className="text-primary text-4xl font-bold uppercase tracking-wider">
+          <h1 className="text-primary text-2xl font-bold uppercase tracking-wider">
             {copy.heading.start}{" "}
             <span className="text-secondary">{copy.heading.accent}</span>
           </h1>
@@ -92,11 +89,7 @@ export function ThirdSlide({ brand, copy }: ThirdSlideProps) {
           </div>
         </div>
 
-        <div className="w-full relative my-8">
-          <hr className="border-t-secondary border-t-2 opacity-70" />
-
-          <span className="size-3 bg-secondary absolute top-1/2 start-1/2 rounded-full -translate-x-1.5 -translate-y-1.5"></span>
-        </div>
+        <LineBreak className="my-8" />
 
         <div className="flex flex-col">
           <span className="font-semibold text-primary opacity-90 mb-2">

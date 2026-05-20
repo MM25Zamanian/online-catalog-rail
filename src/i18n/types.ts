@@ -31,7 +31,7 @@ export type Dictionary = {
     officeLabel: string;
     office: string;
     otherOfficesLabel: string;
-    otherOffices: string;
+    otherOffices: string[];
     mobileNumbers: string[];
     deskphoneNumbers: string[];
     instagram: string;

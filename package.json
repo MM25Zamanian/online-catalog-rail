@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "BUILD_LOCALE=tr next dev --webpack",
+    "dev": "next dev --webpack",
     "build": "next build --webpack",
     "build:static": "next build --webpack",
     "build:en": "BUILD_LOCALE=en next build --webpack",
