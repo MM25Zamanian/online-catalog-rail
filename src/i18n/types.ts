@@ -12,7 +12,7 @@ export type Dictionary = {
     accent: string;
     subtitle: string;
   };
-  firstSlide: {
+  slide01: {
     logoAlt: string;
     railImageAlt: string;
     tagline: {
@@ -25,19 +25,7 @@ export type Dictionary = {
     }[];
     footer: string;
   };
-  secondSlide: {
-    logoAlt: string;
-    railImageAlt: string;
-    officeLabel: string;
-    office: string;
-    otherOfficesLabel: string;
-    otherOffices: string[];
-    mobileNumbers: string[];
-    deskphoneNumbers: string[];
-    instagram: string;
-    website: string;
-  };
-  thirdSlide: {
+  slide02: {
     trafficLightsAlt: string;
     heading: {
       start: string;
@@ -50,5 +38,78 @@ export type Dictionary = {
       end: string;
     };
   };
-  fourthSlide: unknown;
+  slide03: {
+    logoAlt: string;
+    backgroundAlt: string;
+    title: string;
+    introParagraphs: [string, string];
+    stats: {
+      value: string;
+      suffix: string;
+      label: string;
+      iconKey: "award" | "globe" | "train" | "users";
+    }[];
+  };
+  slide04: {
+    backgroundAlt: string;
+    heading: {
+      start: string;
+      accent: string;
+    };
+    intro: string;
+    services: {
+      title: string;
+      description: string;
+      iconKey:
+        | "train"
+        | "shield"
+        | "truck"
+        | "warehouse"
+        | "factCheck"
+        | "description"
+        | "globe"
+        | "package";
+    }[];
+  };
+  slide05: {
+    backgroundAlt: string;
+    heading: {
+      start: string;
+      accent: string;
+      continued: string;
+    };
+    intro: string;
+    services: {
+      title: string;
+      description: string;
+      iconKey: "shield" | "warehouse" | "factCheck" | "description";
+    }[];
+  };
+  slide06: {
+    countryLabel: string;
+    heading: {
+      start: string;
+      accent: string;
+    };
+    terminalsTitle: string;
+    terminals: string[];
+    destinationsTitle: string;
+    destinations: string[];
+  };
+  slide07: {
+    logoAlt: string;
+    railImageAlt: string;
+    officeLabel: string;
+    office: string;
+    otherOfficesLabel: string;
+    otherOffices: string[];
+    mobileNumbersLabel: string;
+    mobileNumbers: string[];
+    deskphoneNumbersLabel: string;
+    deskphoneNumbers: string[];
+    instagramLabel: string;
+    instagram: string;
+    websiteLabel: string;
+    website: string;
+  };
 };

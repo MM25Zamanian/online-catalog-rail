@@ -14,14 +14,14 @@ function ListItem({ content }: { content: string }) {
   );
 }
 
-type ThirdSlideProps = {
+type Slide02Props = {
   brand: Dictionary["brand"];
-  copy: Dictionary["thirdSlide"];
+  copy: Dictionary["slide02"];
 };
 
 const locale = getBuildLocale();
 
-export function ThirdSlide({ brand, copy }: ThirdSlideProps) {
+export function Slide02({ brand, copy }: Slide02Props) {
   return (
     <Slide className="bg-background">
       <div className="absolute -bottom-2 -end-24 aspect-[1/2] h-[40rem]">
@@ -33,7 +33,6 @@ export function ThirdSlide({ brand, copy }: ThirdSlideProps) {
           loading="lazy"
           className="object-cover mix-blend-darken"
         />
-
         <span
           className={cn(
             "h-[6%] aspect-square absolute z-20 top-[19.75%] end-[43%] rounded-full",
@@ -41,7 +40,6 @@ export function ThirdSlide({ brand, copy }: ThirdSlideProps) {
             "animate-traffic-lights-pulse"
           )}
         ></span>
-
         <span
           className={cn(
             "h-[6%] aspect-square absolute z-20 top-[26.5%] end-[43%] rounded-full",
@@ -49,7 +47,6 @@ export function ThirdSlide({ brand, copy }: ThirdSlideProps) {
             "animate-traffic-lights-pulse delay-1000"
           )}
         ></span>
-
         <span
           className={cn(
             "h-[6%] aspect-square absolute z-20 top-[33.25%] end-[43%] rounded-full",

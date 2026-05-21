@@ -8,15 +8,15 @@ import { ShipIcon, StoreIcon, TrainIcon, TruckIcon } from "@/components/icons";
 import { cn } from "@/lib/utils";
 import { LineBreak } from "@/components/line-break";
 
-type FirstSlideProps = {
+type Slide01Props = {
   brand: Dictionary["brand"];
-  copy: Dictionary["firstSlide"];
+  copy: Dictionary["slide01"];
   children: ReactNode;
 };
 
 const locale = getBuildLocale();
 
-export function FirstSlide({ brand, copy, children }: FirstSlideProps) {
+export function Slide01({ brand, copy, children }: Slide01Props) {
   return (
     <Slide className="bg-primary">
       {children}

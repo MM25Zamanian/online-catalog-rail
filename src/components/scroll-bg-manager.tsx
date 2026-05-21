@@ -4,9 +4,12 @@ import { useEffect, useLayoutEffect, useMemo, useState } from "react";
 
 const BACKGROUND_COLORS: Record<number, string> = {
   0: "#03162a",
-  1: "#03162a",
+  1: "#f8f8f8",
   2: "#f8f8f8",
-  3: "#f8f8f8",
+  3: "#03162a",
+  4: "#03162a",
+  5: "#f8f8f8",
+  6: "#03162a",
 };
 
 export function ScrollBackgroundManager() {

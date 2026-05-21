@@ -14,8 +14,8 @@ import { LineBreak } from "@/components/line-break";
 import { Fragment, JSX, ReactNode, SVGProps } from "react";
 import { PhoneNumber } from "@/components/phone-number";
 
-type SecondSlideProps = {
-  copy: Dictionary["secondSlide"];
+type Slide07Props = {
+  copy: Dictionary["slide07"];
 };
 
 function ContentItem(params: {
@@ -24,9 +24,7 @@ function ContentItem(params: {
 }) {
   return (
     <div className="flex gap-4 z-20 items-center">
-      {params.icon && (
-        <params.icon className="size-6 text-background shrink-0" />
-      )}
+      {params.icon && <params.icon className="size-6 text-background shrink-0" />}
 
       <div className="flex flex-col gap-4">
         <div className="flex flex-col pe-4" key={params.data.title}>
@@ -45,7 +43,7 @@ function ContentItem(params: {
   );
 }
 
-export function SecondSlide({ copy }: SecondSlideProps) {
+export function Slide07({ copy }: Slide07Props) {
   return (
     <Slide className="bg-primary pt-10">
       <Image
@@ -72,15 +70,9 @@ export function SecondSlide({ copy }: SecondSlideProps) {
               <div className="flex flex-wrap max-w-72 items-center gap-x-2">
                 {copy.otherOffices.map((address, index, array) => (
                   <Fragment key={index}>
-                    <span
-                      className="text-white opacity-80 text-nowrap"
-                    >
-                      {address}
-                    </span>
+                    <span className="text-white opacity-80 text-nowrap">{address}</span>
                     {index < array.length - 1 && (
-                      <span
-                        className="size-1.5 bg-secondary rotate-z-45 opacity-70"
-                      />
+                      <span className="size-1.5 bg-secondary rotate-z-45 opacity-70" />
                     )}
                   </Fragment>
                 ))}
@@ -92,15 +84,12 @@ export function SecondSlide({ copy }: SecondSlideProps) {
         <ContentItem
           icon={PhoneIcon}
           data={{
-            title: "Mobile Numbers:",
+            title: copy.mobileNumbersLabel,
             content: (
               <div className="flex flex-wrap max-w-72 items-center gap-x-2">
                 {copy.mobileNumbers.map((number, index) => (
                   <Fragment key={index}>
-                    <span
-                      key={index}
-                      className="text-white opacity-80 text-nowrap"
-                    >
+                    <span className="text-white opacity-80 text-nowrap">
                       <PhoneNumber value={number} clickable />
                     </span>
                     {index % 2 === 0 && (
@@ -119,7 +108,7 @@ export function SecondSlide({ copy }: SecondSlideProps) {
         <ContentItem
           icon={DeskphoneIcon}
           data={{
-            title: "DeskPhone Numbers:",
+            title: copy.deskphoneNumbersLabel,
             content: (
               <div className="flex flex-wrap max-w-72 items-center gap-x-2">
                 {copy.deskphoneNumbers.map((number, index) => (
@@ -140,15 +129,10 @@ export function SecondSlide({ copy }: SecondSlideProps) {
         <ContentItem
           icon={InstagramIcon}
           data={{
-            title: "Instagram:",
+            title: copy.instagramLabel,
             content: (
-              <a
-                href={"https://instagram.com/" + copy.instagram}
-                target="_blank"
-              >
-                <span className="text-secondary font-black text-sm me-0.5">
-                  @
-                </span>
+              <a href={"https://instagram.com/" + copy.instagram} target="_blank">
+                <span className="text-secondary font-black text-sm me-0.5">@</span>
                 <span className="font-bold uppercase text-white tracking-widest text-xs opacity-70">
                   {copy.instagram}
                 </span>
@@ -160,7 +144,7 @@ export function SecondSlide({ copy }: SecondSlideProps) {
         <ContentItem
           icon={GlobeIcon}
           data={{
-            title: "Website:",
+            title: copy.websiteLabel,
             content: (
               <a href={"https://" + copy.website} target="_blank">
                 <span className="font-bold uppercase text-white tracking-widest text-sm opacity-70">

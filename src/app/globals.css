@@ -11,24 +11,72 @@
   --font-sans: var(--font-roboto);
   --font-mono: var(--font-roboto);
 
-  --animate-traffic-lights-pulse: traffic-lights-pulse 3s
-    var(--tw-animation-delay) ease both infinite;
+  --animate-traffic-lights-pulse: traffic-lights-pulse 3s var(--tw-animation-delay) ease both infinite;
 
   @keyframes traffic-lights-pulse {
+
     0%,
     66%,
     100% {
       opacity: 0%;
     }
+
     33% {
       opacity: 100%;
     }
   }
 }
 
+@import "tailwindcss";
+
+@theme {
+  --animate-map-gold-shine: map-gold-shine 2s linear infinite;
+
+  @keyframes map-gold-shine {
+    0% {
+      transform: translateX(-120%) skewX(-14deg);
+      opacity: 0;
+    }
+
+    4% {
+      opacity: 0.9;
+    }
+
+    25% {
+      opacity: 0.9;
+    }
+
+    30%,
+    100% {
+      transform: translateX(260%) skewX(-14deg);
+      opacity: 0;
+    }
+  }
+}
+
+@utility map-mask {
+  mask-repeat: no-repeat;
+  mask-size: contain;
+  mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  -webkit-mask-position: center;
+}
+
+@utility map-gold-shine {
+  background: linear-gradient(105deg,
+      transparent 0%,
+      rgba(255, 218, 140, 0) 22%,
+      rgba(255, 218, 140, 0.35) 42%,
+      rgba(255, 244, 210, 0.95) 50%,
+      rgba(255, 201, 96, 0.35) 58%,
+      transparent 78%);
+}
+
 html,
 body {
   background: var(--color-primary);
+  transition: background-color 500ms ease-in-out;
 }
 
 :root {
@@ -53,6 +101,7 @@ body {
     opacity: 0;
     transform: translateY(24px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
