@@ -18,9 +18,11 @@ type CatalogMotionDetail = {
   activeIndex: number;
   direction: ScrollDirection;
   progress: number;
+  settled: boolean;
 };
 
 export const CATALOG_MOTION_EVENT = "catalog:motion-update";
+const REVEAL_VISIBILITY_THRESHOLD = 0.7;
 
 function clamp(value: number, min: number, max: number) {
   return Math.min(Math.max(value, min), max);
@@ -56,12 +58,12 @@ export function ScrollBackgroundManager() {
     root.dataset.motionReady = "true";
 
     let activeIndex = 0;
+    let settled = false;
     let direction: ScrollDirection = "down";
     let lastScrollTop = root.scrollTop;
     let rafId = 0;
     let isTicking = false;
     let isDestroyed = false;
-
     const visibilityRatios = new Map<number, number>();
 
     const setDirection = (nextDirection: ScrollDirection) => {
@@ -71,9 +73,22 @@ export function ScrollBackgroundManager() {
       }
     };
 
+    const applySettledState = () => {
+      root.dataset.scrollSettled = settled ? "true" : "false";
+      for (let i = 0; i < slides.length; i += 1) {
+        slides[i].dataset.settled = i === activeIndex && settled ? "true" : "false";
+      }
+    };
+
+    const setSettled = (nextSettled: boolean) => {
+      if (settled === nextSettled) return;
+      settled = nextSettled;
+      applySettledState();
+    };
+
     const setActiveSlide = (nextActiveIndex: number) => {
       const clampedIndex = clamp(nextActiveIndex, 0, slides.length - 1);
-      if (activeIndex === clampedIndex) return;
+      if (activeIndex === clampedIndex) return false;
 
       activeIndex = clampedIndex;
       for (let i = 0; i < slides.length; i += 1) {
@@ -81,11 +96,14 @@ export function ScrollBackgroundManager() {
       }
 
       applyBackground(activeIndex);
+      applySettledState();
+      return true;
     };
 
     const updateSlideProgress = () => {
       const rootRect = root.getBoundingClientRect();
       const rootCenter = rootRect.top + rootRect.height / 2;
+      let activeVisibilityRatio = 0;
 
       for (let i = 0; i < slides.length; i += 1) {
         if (Math.abs(i - activeIndex) > 1) {
@@ -99,7 +117,21 @@ export function ScrollBackgroundManager() {
           Math.abs(slideCenter - rootCenter) / (rootRect.height * 0.8);
         const progress = toProgress(1 - distanceRatio);
         slides[i].style.setProperty("--slide-progress", progress);
+
+        if (i === activeIndex) {
+          const visibleHeight =
+            Math.min(slideRect.bottom, rootRect.bottom) -
+            Math.max(slideRect.top, rootRect.top);
+          const visibilityRatio = clamp(
+            visibleHeight / Math.max(slideRect.height, 1),
+            0,
+            1
+          );
+          activeVisibilityRatio = visibilityRatio;
+        }
       }
+
+      return activeVisibilityRatio;
     };
 
     const dispatchMotionEvent = () => {
@@ -113,6 +145,7 @@ export function ScrollBackgroundManager() {
             activeIndex,
             direction,
             progress: clamp(activeProgress, 0, 1),
+            settled,
           },
         })
       );
@@ -130,7 +163,8 @@ export function ScrollBackgroundManager() {
       }
 
       lastScrollTop = scrollTop;
-      updateSlideProgress();
+      const activeVisibility = updateSlideProgress();
+      setSettled(activeVisibility >= REVEAL_VISIBILITY_THRESHOLD);
       dispatchMotionEvent();
     };
 
@@ -138,6 +172,10 @@ export function ScrollBackgroundManager() {
       if (isTicking) return;
       isTicking = true;
       rafId = window.requestAnimationFrame(tick);
+    };
+
+    const handleScroll = () => {
+      requestTick();
     };
 
     const observer = new IntersectionObserver(
@@ -174,22 +212,25 @@ export function ScrollBackgroundManager() {
     for (let i = 0; i < slides.length; i += 1) {
       slides[i].dataset.active = i === activeIndex ? "true" : "false";
       slides[i].dataset.direction = direction;
+      slides[i].dataset.settled = i === activeIndex ? "true" : "false";
       slides[i].style.setProperty("--slide-progress", i === activeIndex ? "1" : "0");
       visibilityRatios.set(i, i === activeIndex ? 1 : 0);
       observer.observe(slides[i]);
     }
 
+    applySettledState();
     applyBackground(activeIndex);
-    root.addEventListener("scroll", requestTick, { passive: true });
-    window.addEventListener("resize", requestTick);
+    root.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll);
     requestTick();
 
     return () => {
       isDestroyed = true;
-      root.removeEventListener("scroll", requestTick);
-      window.removeEventListener("resize", requestTick);
+      root.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
       observer.disconnect();
       root.dataset.motionReady = "false";
+      root.dataset.scrollSettled = "false";
 
       if (rafId) {
         window.cancelAnimationFrame(rafId);

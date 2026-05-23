@@ -25,6 +25,7 @@ export function Slide({
       data-slide-index={slideIndex}
       data-motion-profile={motionProfile}
       data-active="false"
+      data-settled="false"
       data-direction="down"
       style={style}
       className={clsx(

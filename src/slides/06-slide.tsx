@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { LazyMotion, domAnimation, useMotionValue, useReducedMotion, useTransform } from "motion/react";
+import { LazyMotion, domAnimation, useReducedMotion } from "motion/react";
 import * as m from "motion/react-m";
 import { Slide } from "@/components/slide";
 import { IranRouteLines } from "@/components/iran-routes-lines";
@@ -31,54 +31,33 @@ type CatalogMotionDetail = {
   activeIndex: number;
   direction: "up" | "down";
   progress: number;
+  settled: boolean;
 };
 
 export function Slide06({ copy }: Slide06Props) {
   const prefersReducedMotion = useReducedMotion();
   const [isActive, setIsActive] = useState(false);
-
-  const progress = useMotionValue(0);
-  const stageA = useTransform(progress, [0, 0.35], [0, 1]);
-  const stageB = useTransform(progress, [0.35, 0.75], [0, 1]);
-  const stageC = useTransform(progress, [0.75, 1], [0, 1]);
-
-  const mapOpacity = useTransform(stageA, [0, 1], [0.15, 1]);
-  const mapScale = useTransform(stageA, [0, 1], [0.96, 1]);
-  const mapTranslateY = useTransform(stageA, [0, 1], [20, 0]);
-
-  const routeOpacity = useTransform(stageB, [0, 1], [0.1, 1]);
-  const routeScale = useTransform(stageB, [0, 1], [0.8, 1]);
-
-  const titleOpacity = useTransform(stageA, [0, 1], [0.3, 1]);
-  const titleTranslateY = useTransform(stageA, [0, 1], [14, 0]);
-
-  const labelsOpacity = useTransform(stageC, [0, 1], [1, 1]);
-  const labelsTranslateY = useTransform(stageC, [0, 1], [0, 0]);
+  const [isSettled, setIsSettled] = useState(false);
 
   useEffect(() => {
     const handleMotionUpdate = (event: Event) => {
       const detail = (event as CustomEvent<CatalogMotionDetail>).detail;
       const active = detail.activeIndex === 5;
       setIsActive(active);
+      setIsSettled(active && detail.settled);
 
       if (!active) {
-        progress.set(0);
         return;
       }
-
-      if (prefersReducedMotion) {
-        progress.set(1);
-        return;
-      }
-
-      progress.set(detail.progress);
     };
 
     document.addEventListener(CATALOG_MOTION_EVENT, handleMotionUpdate as EventListener);
     return () => {
       document.removeEventListener(CATALOG_MOTION_EVENT, handleMotionUpdate as EventListener);
     };
-  }, [prefersReducedMotion, progress]);
+  }, []);
+
+  const shouldReveal = prefersReducedMotion ? isActive : isActive && isSettled;
 
   return (
     <LazyMotion features={domAnimation}>
@@ -86,18 +65,23 @@ export function Slide06({ copy }: Slide06Props) {
         <m.div
           data-parallax="bg"
           className="absolute flex items-end bg-background overflow-hidden justify-center bottom-[5dvh] end-[6dvw] md:bottom-4 md:end-8 w-[20rem] h-[20rem]"
-          style={{
-            opacity: mapOpacity,
-            scale: mapScale,
-            y: mapTranslateY,
-          }}
+          initial={false}
+          animate={
+            shouldReveal
+              ? { opacity: 1, scale: 1, y: 0 }
+              : { opacity: 0, scale: 0.96, y: 22 }
+          }
+          transition={{ duration: prefersReducedMotion ? 0.01 : 0.92, ease: [0.18, 0.84, 0.22, 1] }}
         >
           <m.div
             className="text-xl font-black text-primary z-20 absolute top-34 start-36 flex flex-col items-center justify-center"
-            style={{
-              opacity: titleOpacity,
-              y: titleTranslateY,
-            }}
+            initial={false}
+            animate={
+              shouldReveal
+                ? { opacity: 1, y: 0 }
+                : { opacity: 0, y: 16 }
+            }
+            transition={{ duration: prefersReducedMotion ? 0.01 : 0.8, ease: [0.18, 0.84, 0.22, 1] }}
           >
             <LocationIcon className="size-8" />
             <span className="uppercase">{copy.countryLabel}</span>
@@ -111,17 +95,24 @@ export function Slide06({ copy }: Slide06Props) {
 
           <m.div
             className="absolute start-0 bottom-0 z-10 h-full w-full"
-            style={{
-              opacity: routeOpacity,
-              scale: routeScale,
+            initial={false}
+            animate={
+              shouldReveal
+                ? { opacity: 1, scale: 1 }
+                : { opacity: 0, scale: 0.84 }
+            }
+            transition={{
+              delay: prefersReducedMotion ? 0 : 0.35,
+              duration: prefersReducedMotion ? 0.01 : 0.86,
+              ease: [0.18, 0.84, 0.22, 1],
             }}
           > 
             <IranRouteLines
               className="absolute start-0 bottom-0 h-full w-full"
               startPoint={{ x: 470, y: 280 }}
-              animated={isActive && !prefersReducedMotion}
-              lineOpacity={isActive ? 1 : 0.4}
-              labelOpacity={prefersReducedMotion ? 1 : 0.8}
+              animated={shouldReveal && !prefersReducedMotion}
+              lineOpacity={shouldReveal ? 1 : 0.35}
+              labelOpacity={shouldReveal ? 1 : 0.2}
             />
           </m.div>
         </m.div>
@@ -131,10 +122,13 @@ export function Slide06({ copy }: Slide06Props) {
             data-reveal="headline"
             data-stagger={0}
             className="font-black text-3xl flex flex-col uppercase ps-1"
-            style={{
-              opacity: titleOpacity,
-              y: titleTranslateY,
-            }}
+            initial={false}
+            animate={
+              shouldReveal
+                ? { opacity: 1, y: 0 }
+                : { opacity: 0, y: 18 }
+            }
+            transition={{ duration: prefersReducedMotion ? 0.01 : 0.78, ease: [0.18, 0.84, 0.22, 1] }}
           >
             <span className="text-primary">{copy.heading.start}</span>
             <span className="text-secondary">{copy.heading.accent}</span>
@@ -146,9 +140,15 @@ export function Slide06({ copy }: Slide06Props) {
             data-reveal="body"
             data-stagger={2}
             className="flex gap-2"
-            style={{
-              opacity: labelsOpacity,
-              y: labelsTranslateY,
+            initial={false}
+            animate={
+              shouldReveal
+                ? { opacity: 1 }
+                : { opacity: 0 }
+            }
+            transition={{
+              duration: prefersReducedMotion ? 0.01 : 0.5,
+              ease: [0.18, 0.84, 0.22, 1],
             }}
           >
             <div className="flex-1 pt-4 pb-2 flex flex-col">
