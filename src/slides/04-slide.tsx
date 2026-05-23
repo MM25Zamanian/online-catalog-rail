@@ -33,7 +33,7 @@ export function Slide04({ copy }: Slide04Props) {
   return (
     <Slide className="bg-primary">
       <div className="absolute inset-x-0 bottom-0 h-[38%] sm:h-[42%]">
-        <span className="absolute inset-0 z-10 bg-linear-to-t from-primary via-primary/85 to-transparent" />
+        <span className="absolute inset-0 z-10  bg-linear-180 from-primary from-20% via-primary/20 via-90% to-primary/90" />
         <Image
           src={ServicesRailBackground}
           alt={copy.backgroundAlt}
@@ -59,7 +59,7 @@ export function Slide04({ copy }: Slide04Props) {
         </div>
 
         <div className="mt-5 mb-auto max-w-md mx-auto w-full">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 gap-3">
             {copy.services.map((service, index) => {
               const Icon = serviceIcons[service.iconKey];
               const number = String(index + 1).padStart(2, "0");
