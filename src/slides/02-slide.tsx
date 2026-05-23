@@ -24,7 +24,7 @@ const locale = getBuildLocale();
 export function Slide02({ brand, copy }: Slide02Props) {
   return (
     <Slide slideIndex={1} motionProfile="content" className="bg-background">
-      <div data-parallax="bg" className="absolute -bottom-2 -end-24 aspect-[1/2] h-[40rem]">
+      <div data-parallax="bg" className="absolute bg-background -bottom-2 -end-24 aspect-[1/2] h-[40rem]">
         <Image
           src={TrafficLights}
           alt={copy.trafficLightsAlt}
