@@ -19,12 +19,14 @@ type IranRouteLinesProps = {
   startPoint: Point;
   targets?: RouteTarget[];
   animated?: boolean;
+  lineOpacity?: number;
+  labelOpacity?: number;
 };
 
 const VIEW_BOX = { width: 900, height: 620 } as const;
 
 const LINE_COLOR = "#c8922e";
-const TEXT_COLOR = "#071c35";
+const TEXT_COLOR = "#03162a";
 
 const ANIMATION = {
   duration: 3.8,
@@ -117,12 +119,16 @@ function RouteItem({
   index,
   animated,
   gradientId,
+  lineOpacity,
+  labelOpacity,
 }: {
   target: RouteTarget;
   startPoint: Point;
   index: number;
   animated: boolean;
   gradientId: string;
+  lineOpacity: number;
+  labelOpacity: number;
 }) {
   const path = createCurvedPath(startPoint, target.dot, target.bend);
   const begin = `${index * ANIMATION.stagger}s`;
@@ -136,7 +142,7 @@ function RouteItem({
         stroke={`url(#${gradientId})`}
         strokeWidth="2"
         strokeLinecap="round"
-        strokeOpacity="0.38"
+        strokeOpacity={0.38 * lineOpacity}
       />
 
       {/* Moving highlight segment */}
@@ -150,7 +156,7 @@ function RouteItem({
           pathLength="1"
           strokeDasharray="0.16 1"
           strokeDashoffset="0"
-          opacity="0.95"
+          opacity={0.95 * lineOpacity}
         >
           <animate
             attributeName="stroke-dashoffset"
@@ -162,7 +168,13 @@ function RouteItem({
         </path>
       )}
 
-      <circle cx={target.dot.x} cy={target.dot.y} r="5" fill={LINE_COLOR} />
+      <circle
+        cx={target.dot.x}
+        cy={target.dot.y}
+        r="5"
+        fill={LINE_COLOR}
+        opacity={lineOpacity}
+      />
 
       {animated && (
         <circle
@@ -193,6 +205,7 @@ function RouteItem({
         x={target.labelPos.x}
         y={target.labelPos.y}
         fill={TEXT_COLOR}
+        fillOpacity={labelOpacity}
         fontSize="32"
         fontWeight="800"
         letterSpacing="0.02em"
@@ -208,6 +221,8 @@ export function IranRouteLines({
   startPoint,
   targets = defaultTargets,
   animated = true,
+  lineOpacity = 1,
+  labelOpacity = 1,
 }: IranRouteLinesProps) {
   const gradientId = `iran-route-gradient-${useId().replace(/:/g, "")}`;
 
@@ -233,6 +248,8 @@ export function IranRouteLines({
           index={index}
           animated={animated}
           gradientId={gradientId}
+          lineOpacity={lineOpacity}
+          labelOpacity={labelOpacity}
         />
       ))}
     </svg>

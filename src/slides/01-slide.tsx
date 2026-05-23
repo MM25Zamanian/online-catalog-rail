@@ -18,7 +18,7 @@ const locale = getBuildLocale();
 
 export function Slide01({ brand, copy, children }: Slide01Props) {
   return (
-    <Slide className="bg-primary">
+    <Slide slideIndex={0} motionProfile="hero" className="bg-primary">
       {children}
 
       <div className="flex flex-col pt-24 flex-1 z-10 items-center justify-center">
@@ -29,13 +29,21 @@ export function Slide01({ brand, copy, children }: Slide01Props) {
             width={400}
             height={400}
             preload
+            data-reveal="headline"
+            data-stagger={0}
             className="size-28 aspect-square"
           />
 
-          <h1 className="text-white text-2xl font-bold uppercase tracking-[0.5rem] mt-4">
+          <h1
+            data-reveal="headline"
+            data-stagger={1}
+            className="text-white text-2xl font-bold uppercase tracking-[0.5rem] mt-4"
+          >
             {brand.name} <span className="text-secondary">{brand.accent}</span>
           </h1>
           <h2
+            data-reveal="subhead"
+            data-stagger={2}
             className={cn(
               "text-xs font-bold opacity-70 uppercase text-white",
               locale === "en" ? "tracking-[0.3rem]" : "tracking-[0.4rem]"
@@ -44,9 +52,11 @@ export function Slide01({ brand, copy, children }: Slide01Props) {
             {brand.subtitle}
           </h2>
 
-          <LineBreak className="my-3" />
+          <LineBreak data-reveal="body" data-stagger={3} className="my-3" />
 
           <h3
+            data-reveal="body"
+            data-stagger={4}
             className={cn(
               "text-xs font-bold tracking-[0.125rem] uppercase text-white",
               locale === "en" ? "tracking-[0.125rem]" : "tracking-wide"
@@ -57,7 +67,7 @@ export function Slide01({ brand, copy, children }: Slide01Props) {
           </h3>
         </div>
 
-        <div className="relative aspect-[4/3] w-full -mt-[12dvh]">
+        <div data-parallax="bg" className="relative aspect-[4/3] w-full -mt-[12dvh]">
           <div className="bg-radial from-transparent from-40% to-70% to-primary absolute inset-0 z-10"></div>
 
           <Image
@@ -70,8 +80,8 @@ export function Slide01({ brand, copy, children }: Slide01Props) {
           />
         </div>
 
-        <div className="flex -mt-[4dvh] z-20">
-          <div className="py-2 flex flex-col items-center min-w-22 md:min-w-24 lg:min-w-28">
+        <div data-reveal="body" data-stagger={5} className="flex -mt-[4dvh] z-20">
+          <div data-reveal="card" data-stagger={0} className="py-2 flex flex-col items-center min-w-22 md:min-w-24 lg:min-w-28">
             <TrainIcon className="size-12 text-secondary" />
 
             <span
@@ -89,7 +99,7 @@ export function Slide01({ brand, copy, children }: Slide01Props) {
 
           <span className="border-e border-e-secondary opacity-70"></span>
 
-          <div className="py-2 flex flex-col items-center min-w-22 md:min-w-24 lg:min-w-28">
+          <div data-reveal="card" data-stagger={1} className="py-2 flex flex-col items-center min-w-22 md:min-w-24 lg:min-w-28">
             <TruckIcon className="size-12 text-secondary" />
 
             <span
@@ -107,7 +117,7 @@ export function Slide01({ brand, copy, children }: Slide01Props) {
 
           <span className="border-e border-e-secondary opacity-70"></span>
 
-          <div className="py-2 flex flex-col items-center min-w-22 md:min-w-24 lg:min-w-28">
+          <div data-reveal="card" data-stagger={2} className="py-2 flex flex-col items-center min-w-22 md:min-w-24 lg:min-w-28">
             <ShipIcon className="size-12 text-secondary" />
 
             <span
@@ -125,7 +135,7 @@ export function Slide01({ brand, copy, children }: Slide01Props) {
 
           <span className="border-e border-e-secondary opacity-70"></span>
 
-          <div className="py-2 flex flex-col items-center min-w-22 md:min-w-24 lg:min-w-28">
+          <div data-reveal="card" data-stagger={3} className="py-2 flex flex-col items-center min-w-22 md:min-w-24 lg:min-w-28">
             <StoreIcon className="size-12 text-secondary" />
 
             <span
@@ -142,7 +152,7 @@ export function Slide01({ brand, copy, children }: Slide01Props) {
           </div>
         </div>
 
-        <div className="flex flex-col mx-auto pb-8">
+        <div data-reveal="footer" data-stagger={6} className="flex flex-col mx-auto pb-8">
           <LineBreak className="mb-4" />
 
           <div className="text-center w-full text-secondary tracking-widest uppercase font-bold text-xs">

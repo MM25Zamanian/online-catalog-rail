@@ -27,8 +27,8 @@ export function Slide03({ brand, copy }: Slide03Props) {
   const hasSplitTitle = locale === "en" && titleParts.length === 2;
 
   return (
-    <Slide className="bg-background">
-      <div className="absolute inset-x-0 bottom-0 h-[52%] md:h-[56%]">
+    <Slide slideIndex={2} motionProfile="content" className="bg-background">
+      <div data-parallax="bg" className="absolute inset-x-0 bottom-0 h-[52%] md:h-[56%]">
         <span className="absolute inset-0 z-10 bg-linear-to-t from-background via-background/70 to-transparent" />
         <span className="absolute inset-0 z-10 bg-linear-to-r from-background via-transparent to-background/20 md:from-background/85 md:via-background/10 md:to-background/10" />
 
@@ -43,7 +43,7 @@ export function Slide03({ brand, copy }: Slide03Props) {
       </div>
 
       <div className="flex flex-col h-full px-6 pt-8 pb-6 z-20">
-        <div className="flex items-center gap-3">
+        <div data-reveal="headline" data-stagger={0} className="flex items-center gap-3">
           <Image
             src={Logo}
             alt={copy.logoAlt}
@@ -70,7 +70,7 @@ export function Slide03({ brand, copy }: Slide03Props) {
         </div>
 
         <div className="mt-6 max-w-md">
-          <h3 className="text-primary text-3xl sm:text-4xl font-black uppercase tracking-wide leading-none">
+          <h3 data-reveal="headline" data-stagger={1} className="text-primary text-3xl sm:text-4xl font-black uppercase tracking-wide leading-none">
             {hasSplitTitle ? (
               <>
                 <span>{titleParts[0]} </span>
@@ -81,12 +81,14 @@ export function Slide03({ brand, copy }: Slide03Props) {
             )}
           </h3>
 
-          <LineBreak className="my-4" />
+          <LineBreak data-reveal="body" data-stagger={2} className="my-4" />
 
           <div className="mt-4 flex flex-col gap-3">
-            {copy.introParagraphs.map((paragraph) => (
+            {copy.introParagraphs.map((paragraph, index) => (
               <p
                 key={paragraph}
+                data-reveal="body"
+                data-stagger={index + 3}
                 className="text-primary/90 text-xs sm:text-sm leading-relaxed tracking-wide text-pretty"
               >
                 {paragraph}
@@ -96,12 +98,14 @@ export function Slide03({ brand, copy }: Slide03Props) {
         </div>
 
         <div className="mt-8 grid grid-cols-2 gap-x-4 gap-y-6 sm:gap-4 md:grid-cols-4">
-          {copy.stats.map((stat) => {
+          {copy.stats.map((stat, index) => {
             const Icon = statIcons[stat.iconKey];
 
             return (
               <div
                 key={stat.label}
+                data-reveal="card"
+                data-stagger={index}
                 className={cn(
                   "relative rounded-xl border border-secondary/60 bg-white/20 backdrop-blur-xs shadow-[0_8px_20px_rgba(3,22,42,0.08)]",
                   "flex flex-col items-center text-center px-2 py-3 sm:px-3 sm:py-4"

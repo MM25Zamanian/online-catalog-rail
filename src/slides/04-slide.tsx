@@ -31,8 +31,8 @@ const serviceIcons = {
 
 export function Slide04({ copy }: Slide04Props) {
   return (
-    <Slide className="bg-primary">
-      <div className="absolute inset-x-0 bottom-0 h-[38%] sm:h-[42%]">
+    <Slide slideIndex={3} motionProfile="services" className="bg-primary">
+      <div data-parallax="bg" className="absolute inset-x-0 bottom-0 h-[38%] sm:h-[42%]">
         <span className="absolute inset-0 z-10  bg-linear-180 from-primary from-20% via-primary/20 via-90% to-primary/90" />
         <Image
           src={ServicesRailBackground}
@@ -46,14 +46,14 @@ export function Slide04({ copy }: Slide04Props) {
 
       <div className="relative z-20 h-full px-5 sm:px-6 pt-7 pb-6 flex flex-col">
         <div className="mx-auto w-full max-w-md text-center">
-          <h1 className="text-primary text-3xl font-black uppercase tracking-wide leading-none">
+          <h1 data-reveal="headline" data-stagger={0} className="text-primary text-3xl font-black uppercase tracking-wide leading-none">
             <span className="text-white">{copy.heading.start} </span>
             <span className="text-secondary">{copy.heading.accent}</span>
           </h1>
 
-          <LineBreak className="my-4" />
+          <LineBreak data-reveal="body" data-stagger={1} className="my-4" />
 
-          <p className="text-[0.7rem] sm:text-xs text-white/90 leading-relaxed tracking-wide text-balance">
+          <p data-reveal="body" data-stagger={2} className="text-[0.7rem] sm:text-xs text-white/90 leading-relaxed tracking-wide text-balance">
             {copy.intro}
           </p>
         </div>
@@ -67,9 +67,15 @@ export function Slide04({ copy }: Slide04Props) {
               return (
                 <article
                   key={service.title}
+                  data-reveal="card"
+                  data-stagger={index}
                   className="relative rounded-xl border overflow-hidden border-secondary/80 bg-primary/85 shadow-[0_10px_20px_rgba(3,22,42,0.22)] px-3 py-3"
                 >
-                  <div className="absolute top-0 start-0 rounded-br-lg px-2 py-0.5 text-[0.625rem] font-black tracking-wider bg-secondary text-primary">
+                  <div
+                    data-reveal="subhead"
+                    data-stagger={index}
+                    className="absolute top-0 start-0 rounded-br-lg px-2 py-0.5 text-[0.625rem] font-black tracking-wider bg-secondary text-primary"
+                  >
                     {number}
                   </div>
 

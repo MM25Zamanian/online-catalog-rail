@@ -13,7 +13,10 @@ export default function Home() {
   const dictionary = getDictionary();
 
   return (
-    <main className="snap-y snap-mandatory flex flex-col h-[100svh] overflow-y-auto overscroll-none scroll-smooth">
+    <main
+      data-catalog-scroll-root="true"
+      className="snap-y snap-mandatory flex flex-col h-[100svh] overflow-y-auto overscroll-none scroll-smooth"
+    >
       <ScrollBackgroundManager />
 
       <Slide01 copy={dictionary.slide01} brand={dictionary.brand}>

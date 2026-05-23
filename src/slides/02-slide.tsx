@@ -23,8 +23,8 @@ const locale = getBuildLocale();
 
 export function Slide02({ brand, copy }: Slide02Props) {
   return (
-    <Slide className="bg-background">
-      <div className="absolute -bottom-2 -end-24 aspect-[1/2] h-[40rem]">
+    <Slide slideIndex={1} motionProfile="content" className="bg-background">
+      <div data-parallax="bg" className="absolute -bottom-2 -end-24 aspect-[1/2] h-[40rem]">
         <Image
           src={TrafficLights}
           alt={copy.trafficLightsAlt}
@@ -57,7 +57,7 @@ export function Slide02({ brand, copy }: Slide02Props) {
       </div>
 
       <div className="flex flex-col my-auto w-min px-6">
-        <div className="flex flex-col">
+        <div data-reveal="headline" data-stagger={0} className="flex flex-col">
           <h1 className="text-primary text-3xl font-bold uppercase tracking-wider text-nowrap">
             {brand.name} <span className="text-secondary">{brand.accent}</span>
           </h1>
@@ -71,24 +71,26 @@ export function Slide02({ brand, copy }: Slide02Props) {
           </h2>
         </div>
 
-        <LineBreak className="my-8" />
+        <LineBreak data-reveal="body" data-stagger={1} className="my-8" />
 
         <div className="flex flex-col">
-          <h1 className="text-primary text-2xl font-bold uppercase tracking-wider">
+          <h1 data-reveal="headline" data-stagger={2} className="text-primary text-2xl font-bold uppercase tracking-wider">
             {copy.heading.start}{" "}
             <span className="text-secondary">{copy.heading.accent}</span>
           </h1>
 
           <div className="flex flex-col gap-4 mt-4">
-            {copy.reasons.map((reason) => (
-              <ListItem key={reason} content={reason} />
+            {copy.reasons.map((reason, index) => (
+              <div key={reason} data-reveal="card" data-stagger={index}>
+                <ListItem content={reason} />
+              </div>
             ))}
           </div>
         </div>
 
-        <LineBreak className="my-8" />
+        <LineBreak data-reveal="body" data-stagger={6} className="my-8" />
 
-        <div className="flex flex-col">
+        <div data-reveal="footer" data-stagger={7} className="flex flex-col">
           <span className="font-semibold text-primary opacity-90 mb-2">
             {copy.closing.intro}
           </span>
