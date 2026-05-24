@@ -27,8 +27,6 @@
   }
 }
 
-@import "tailwindcss";
-
 @theme {
   --animate-map-gold-shine: map-gold-shine 2s linear infinite;
 
