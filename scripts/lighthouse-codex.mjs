@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 
 import { spawn } from "node:child_process";
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { createServer } from "node:http";
+import { mkdir, readFile, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 
@@ -34,15 +35,17 @@ async function main() {
   const mode = args.local ? "local" : "url";
   const auditUrl = await resolveAuditUrl();
 
-  let localServerProcess = null;
+  let localServer = null;
 
   try {
     if (args.local) {
       const localDir = String(args.dir ?? DEFAULT_LOCAL_DIR);
       const port = Number(args.port ?? DEFAULT_PORT);
+      const host = String(args.host ?? DEFAULT_HOST);
 
-      localServerProcess = startStaticServer(localDir, port);
+      localServer = await startStaticServer(localDir, host, port);
       await waitForUrl(auditUrl, 30_000);
+      await runLocalPreflight(auditUrl);
     }
 
     await runLighthouse({
@@ -67,8 +70,8 @@ async function main() {
     console.log(`- Raw JSON: ${reportJsonPath}`);
     console.log(`- Codex MD: ${reportMarkdownPath}`);
   } finally {
-    if (localServerProcess) {
-      localServerProcess.kill("SIGTERM");
+    if (localServer) {
+      await stopStaticServer(localServer);
     }
   }
 }
@@ -89,35 +92,118 @@ async function resolveAuditUrl() {
   return String(args.url);
 }
 
-function startStaticServer(staticDir, port) {
-  console.log(`Starting local static server: ${staticDir} on port ${port}`);
+async function startStaticServer(staticDir, host, port) {
+  console.log(`Starting local static server: ${staticDir} on ${host}:${port}`);
+  const rootDir = path.resolve(staticDir);
 
-  const child = spawn(
-    getNpxCommand(),
-    ["-y", "serve", staticDir, "-l", String(port)],
-    {
-      stdio: ["ignore", "pipe", "pipe"],
-      shell: false,
+  const server = createServer(async (request, response) => {
+    try {
+      const requestUrl = new URL(request.url ?? "/", `http://${host}:${port}`);
+      const pathname = decodeURIComponent(requestUrl.pathname);
+      const filePath = await resolveFilePath(rootDir, pathname);
+
+      if (!filePath) {
+        response.writeHead(404, { "Cache-Control": "no-store" });
+        response.end("Not Found");
+        return;
+      }
+
+      const headers = getResponseHeaders(filePath);
+      response.writeHead(200, headers);
+
+      if (request.method === "HEAD") {
+        response.end();
+        return;
+      }
+
+      const content = await readFile(filePath);
+      response.end(content);
+    } catch (error) {
+      response.writeHead(500, { "Cache-Control": "no-store" });
+      response.end("Internal Server Error");
+      console.error("[serve] request handling failed:", error);
     }
-  );
-
-  child.stdout.on("data", (chunk) => {
-    const text = chunk.toString().trim();
-    if (text) console.log(`[serve] ${text}`);
   });
 
-  child.stderr.on("data", (chunk) => {
-    const text = chunk.toString().trim();
-    if (text) console.error(`[serve] ${text}`);
+  await new Promise((resolve, reject) => {
+    server.once("error", reject);
+    server.listen(port, host, () => resolve());
   });
 
-  child.on("exit", (code) => {
-    if (code !== null && code !== 0) {
-      console.error(`Local static server exited with code ${code}`);
+  return server;
+}
+
+async function stopStaticServer(server) {
+  await new Promise((resolve, reject) => {
+    server.close((error) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      resolve();
+    });
+  });
+}
+
+async function resolveFilePath(rootDir, pathname) {
+  const normalizedPath = pathname === "/" ? "/index.html" : pathname;
+  const requestPath = normalizedPath.endsWith("/")
+    ? `${normalizedPath}index.html`
+    : normalizedPath;
+
+  const candidates = [requestPath];
+  const withoutFirstSegment = requestPath.replace(/^\/[^/]+(?=\/)/, "");
+  if (withoutFirstSegment && withoutFirstSegment !== requestPath) {
+    candidates.push(withoutFirstSegment);
+  }
+
+  for (const candidate of candidates) {
+    const absolutePath = path.resolve(rootDir, `.${candidate}`);
+    if (!absolutePath.startsWith(rootDir)) {
+      continue;
     }
-  });
+    if (await fileExists(absolutePath)) {
+      return absolutePath;
+    }
+  }
 
-  return child;
+  return null;
+}
+
+function getResponseHeaders(filePath) {
+  const extension = path.extname(filePath);
+  const contentType = CONTENT_TYPES[extension] ?? "application/octet-stream";
+  const cacheControl = getCacheControlForPath(filePath);
+
+  return {
+    "Content-Type": contentType,
+    "Cache-Control": cacheControl,
+  };
+}
+
+function getCacheControlForPath(filePath) {
+  if (filePath.includes(`${path.sep}_next${path.sep}static${path.sep}`)) {
+    return "public, max-age=31536000, immutable";
+  }
+
+  if (/\.[0-9a-f]{8,}\./i.test(path.basename(filePath))) {
+    return "public, max-age=31536000, immutable";
+  }
+
+  if (filePath.endsWith(".html")) {
+    return "no-cache";
+  }
+
+  return "public, max-age=3600";
+}
+
+async function fileExists(filePath) {
+  try {
+    const entry = await stat(filePath);
+    return entry.isFile();
+  } catch {
+    return false;
+  }
 }
 
 async function runLighthouse({
@@ -338,6 +424,55 @@ async function waitForUrl(url, timeoutMs) {
   throw new Error(`Local server did not become ready: ${waitUrl.toString()}`);
 }
 
+async function runLocalPreflight(auditUrl) {
+  const preflightUrls = new Set([auditUrl]);
+  const html = await fetchText(auditUrl);
+  const assetPaths = extractAssetPaths(html);
+  const baseUrl = new URL(auditUrl);
+
+  for (const assetPath of assetPaths) {
+    preflightUrls.add(new URL(assetPath, baseUrl).toString());
+  }
+
+  const failures = [];
+
+  for (const url of preflightUrls) {
+    const response = await fetch(url, { method: "HEAD" });
+    if (response.status >= 400) {
+      failures.push(`${response.status} ${url}`);
+    }
+  }
+
+  if (failures.length > 0) {
+    throw new Error(
+      `Local preflight failed. Critical paths are unreachable:\n${failures.join("\n")}`
+    );
+  }
+}
+
+async function fetchText(url) {
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(`Failed to load preflight HTML (${response.status}): ${url}`);
+  }
+
+  return response.text();
+}
+
+function extractAssetPaths(html) {
+  const matches = html.matchAll(/(?:src|href)=["']([^"']+)["']/g);
+  const assetPaths = new Set();
+
+  for (const match of matches) {
+    const value = match[1];
+    if (!value.startsWith("/")) continue;
+    if (!value.includes("/_next/static/")) continue;
+    assetPaths.add(value);
+  }
+
+  return assetPaths;
+}
+
 function runCommand(command, commandArgs) {
   return new Promise((resolve, reject) => {
     const child = spawn(command, commandArgs, {
@@ -436,3 +571,15 @@ Options:
   --help                      Show help.
 `);
 }
+
+const CONTENT_TYPES = {
+  ".css": "text/css; charset=utf-8",
+  ".html": "text/html; charset=utf-8",
+  ".ico": "image/x-icon",
+  ".js": "application/javascript; charset=utf-8",
+  ".json": "application/json; charset=utf-8",
+  ".svg": "image/svg+xml",
+  ".txt": "text/plain; charset=utf-8",
+  ".webp": "image/webp",
+  ".woff2": "font/woff2",
+};

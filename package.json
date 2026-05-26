@@ -13,7 +13,9 @@
     "start": "next start",
     "lint": "eslint",
     "lighthouse:codex": "node scripts/lighthouse-codex.mjs",
-    "lighthouse:codex:local": "node scripts/lighthouse-codex.mjs --local --dir out --port 4173"
+    "lighthouse:codex:local": "node scripts/lighthouse-codex.mjs --local --dir out --port 4173",
+    "lighthouse:codex:local:en": "pnpm build:en && node scripts/lighthouse-codex.mjs --local --dir out --port 4173 --path /en/",
+    "lighthouse:codex:local:tr": "pnpm build:tr && node scripts/lighthouse-codex.mjs --local --dir out --port 4173 --path /tr/"
   },
   "dependencies": {
     "motion": "^12.40.0",
