@@ -64,7 +64,7 @@ export function Slide06({ copy }: Slide06Props) {
       <Slide slideIndex={5} motionProfile="map" className="bg-background">
         <m.div
           data-parallax="bg"
-          className="absolute flex items-end bg-background overflow-hidden justify-center bottom-[5dvh] end-[6dvw] md:bottom-4 md:end-8 w-[20rem] h-[20rem]"
+          className="absolute flex items-end self-center bg-background overflow-hidden justify-center bottom-[5dvh] md:bottom-4 w-[20rem] h-[20rem]"
           initial={false}
           animate={
             shouldReveal
