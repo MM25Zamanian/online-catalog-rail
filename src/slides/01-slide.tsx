@@ -75,6 +75,7 @@ export function Slide01({ brand, copy, children }: Slide01Props) {
             alt={copy.railImageAlt}
             fill
             preload
+            fetchPriority="high"
             sizes="(max-width: 768px) 100vw, 50vw"
             className="object-cover"
           />
