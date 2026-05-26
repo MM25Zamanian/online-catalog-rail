@@ -36,7 +36,7 @@ FROM ghcr.io/gecut/nginx/cdn:latest AS runtime
 ARG BUILD_LOCALE=en
 ENV BUILD_LOCALE=${BUILD_LOCALE}
 
-LABEL org.opencontainers.image.title="rail-online-catalog" \
+LABEL org.opencontainers.image.title="farsrail.com" \
       org.opencontainers.image.description="Static Khalij Fars Rail online catalog served by gecut/nginx/cdn." \
       org.opencontainers.image.vendor="Khalij Fars Rail" \
       org.opencontainers.image.source="https://github.com/gecut/containers/tree/main/nginx/cdn" \
