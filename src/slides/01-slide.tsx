@@ -1,5 +1,4 @@
 import { Slide } from "@/components/slide";
-import RailImage from "#/rail-train.webp";
 import Logo from "#/logo.webp";
 import Image from "next/image";
 import type { ReactNode } from "react";
@@ -7,6 +6,7 @@ import { getBuildLocale, type Dictionary } from "@/i18n";
 import { ShipIcon, StoreIcon, TrainIcon, TruckIcon } from "@/components/icons";
 import { cn } from "@/lib/utils";
 import { LineBreak } from "@/components/line-break";
+import { FirstSlideHeroImage } from "@/components/01-slide-hero-image";
 
 type Slide01Props = {
   brand: Dictionary["brand"];
@@ -67,22 +67,25 @@ export function Slide01({ brand, copy, children }: Slide01Props) {
           </h3>
         </div>
 
-        <div data-parallax="bg" className="relative aspect-[4/3] w-full -mt-[12dvh]">
+        <div
+          data-parallax="bg"
+          className="relative aspect-[4/3] w-full -mt-[12dvh]"
+        >
           <div className="bg-radial from-transparent from-40% to-70% to-primary absolute inset-0 z-10"></div>
 
-          <Image
-            src={RailImage}
-            alt={copy.railImageAlt}
-            fill
-            preload
-            fetchPriority="high"
-            sizes="(max-width: 768px) 100vw, 50vw"
-            className="object-cover"
-          />
+          <FirstSlideHeroImage alt={copy.railImageAlt} />
         </div>
 
-        <div data-reveal="body" data-stagger={5} className="flex -mt-[4dvh] z-20">
-          <div data-reveal="card" data-stagger={0} className="py-2 flex flex-col items-center min-w-22 md:min-w-24 lg:min-w-28">
+        <div
+          data-reveal="body"
+          data-stagger={5}
+          className="flex -mt-[4dvh] z-20"
+        >
+          <div
+            data-reveal="card"
+            data-stagger={0}
+            className="py-2 flex flex-col items-center min-w-22 md:min-w-24 lg:min-w-28"
+          >
             <TrainIcon className="size-12 text-secondary" />
 
             <span
@@ -98,9 +101,18 @@ export function Slide01({ brand, copy, children }: Slide01Props) {
             </span>
           </div>
 
-          <span className="border-e border-e-secondary opacity-70"></span>
+          <LineBreak
+            orientation="horizontal"
+            isBubble={false}
+            direction="end"
+            delay="2s"
+          />
 
-          <div data-reveal="card" data-stagger={1} className="py-2 flex flex-col items-center min-w-22 md:min-w-24 lg:min-w-28">
+          <div
+            data-reveal="card"
+            data-stagger={1}
+            className="py-2 flex flex-col items-center min-w-22 md:min-w-24 lg:min-w-28"
+          >
             <TruckIcon className="size-12 text-secondary" />
 
             <span
@@ -116,9 +128,17 @@ export function Slide01({ brand, copy, children }: Slide01Props) {
             </span>
           </div>
 
-          <span className="border-e border-e-secondary opacity-70"></span>
+          <LineBreak
+            orientation="horizontal"
+            isBubble={false}
+            direction="end"
+          />
 
-          <div data-reveal="card" data-stagger={2} className="py-2 flex flex-col items-center min-w-22 md:min-w-24 lg:min-w-28">
+          <div
+            data-reveal="card"
+            data-stagger={2}
+            className="py-2 flex flex-col items-center min-w-22 md:min-w-24 lg:min-w-28"
+          >
             <ShipIcon className="size-12 text-secondary" />
 
             <span
@@ -134,9 +154,18 @@ export function Slide01({ brand, copy, children }: Slide01Props) {
             </span>
           </div>
 
-          <span className="border-e border-e-secondary opacity-70"></span>
+          <LineBreak
+            orientation="horizontal"
+            isBubble={false}
+            direction="end"
+            delay="2s"
+          />
 
-          <div data-reveal="card" data-stagger={3} className="py-2 flex flex-col items-center min-w-22 md:min-w-24 lg:min-w-28">
+          <div
+            data-reveal="card"
+            data-stagger={3}
+            className="py-2 flex flex-col items-center min-w-22 md:min-w-24 lg:min-w-28"
+          >
             <StoreIcon className="size-12 text-secondary" />
 
             <span
@@ -153,7 +182,11 @@ export function Slide01({ brand, copy, children }: Slide01Props) {
           </div>
         </div>
 
-        <div data-reveal="footer" data-stagger={6} className="flex flex-col mx-auto pb-8">
+        <div
+          data-reveal="footer"
+          data-stagger={6}
+          className="flex flex-col mx-auto pb-8 -mt-1.5"
+        >
           <LineBreak className="mb-4" />
 
           <div className="text-center w-full text-secondary tracking-widest uppercase font-bold text-xs">
