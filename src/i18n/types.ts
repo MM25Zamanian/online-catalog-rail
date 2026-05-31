@@ -105,10 +105,8 @@ export type Dictionary = {
     otherOffices: string[];
     mobileNumbersLabel: string;
     mobileNumbers: string[];
-    deskphoneNumbersLabel: string;
-    deskphoneNumbers: string[];
     instagramLabel: string;
-    instagram: string;
+    instagram: string[];
     websiteLabel: string;
     website: string;
   };

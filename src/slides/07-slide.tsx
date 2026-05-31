@@ -4,7 +4,6 @@ import Logo from "#/logo.webp";
 import Rail from "#/rail.webp";
 import type { Dictionary } from "@/i18n";
 import {
-  DeskphoneIcon,
   GlobeIcon,
   InstagramIcon,
   LocationIcon,
@@ -115,39 +114,25 @@ export function Slide07({ copy }: Slide07Props) {
 
         <div data-reveal="card" data-stagger={5}>
           <ContentItem
-            icon={DeskphoneIcon}
+            icon={InstagramIcon}
             data={{
-              title: copy.deskphoneNumbersLabel,
+              title: copy.instagramLabel,
               content: (
-                <div className="flex flex-wrap max-w-72 items-center gap-x-2">
-                  {copy.deskphoneNumbers.map((number, index) => (
-                    <Fragment key={index}>
-                      <span className="text-white opacity-80 text-nowrap">
-                        <PhoneNumber value={number} clickable />
-                      </span>
-                      {index % 2 === 0 && (
+                <div className="flex flex-wrap max-w-72 items-center gap-x-2 gap-y-1">
+                  {copy.instagram.map((account, index) => (
+                    <Fragment key={account}>
+                      <a href={"https://instagram.com/" + account} target="_blank">
+                        <span className="text-secondary font-black text-sm me-0.5">@</span>
+                        <span className="font-bold uppercase text-white tracking-widest text-xs opacity-70">
+                          {account}
+                        </span>
+                      </a>
+                      {index < copy.instagram.length - 1 && (
                         <span className="size-1.5 bg-secondary rotate-z-45 opacity-70" />
                       )}
                     </Fragment>
                   ))}
                 </div>
-              ),
-            }}
-          />
-        </div>
-
-        <div data-reveal="card" data-stagger={6}>
-          <ContentItem
-            icon={InstagramIcon}
-            data={{
-              title: copy.instagramLabel,
-              content: (
-                <a href={"https://instagram.com/" + copy.instagram} target="_blank">
-                  <span className="text-secondary font-black text-sm me-0.5">@</span>
-                  <span className="font-bold uppercase text-white tracking-widest text-xs opacity-70">
-                    {copy.instagram}
-                  </span>
-                </a>
               ),
             }}
           />
