@@ -1,4 +1,4 @@
-name: Deploy Images
+name: Deploy Image
 
 on:
   push:
@@ -11,50 +11,9 @@ permissions:
   packages: write
 
 jobs:
-  locales:
-    name: Discover locales
-    runs-on: ubuntu-latest
-    outputs:
-      matrix: ${{ steps.locales.outputs.matrix }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Read locales
-        id: locales
-        shell: bash
-        run: |
-          node <<'NODE'
-          const fs = require("fs");
-
-          const source = fs.readFileSync("src/i18n/types.ts", "utf8");
-          const match = source.match(/locales\s*=\s*\[([^\]]+)\]/);
-
-          if (!match) {
-            throw new Error("Could not find locales in src/i18n/types.ts");
-          }
-
-          const locales = [...match[1].matchAll(/['"]([^'"]+)['"]/g)].map(
-            ([, locale]) => locale,
-          );
-
-          if (locales.length === 0) {
-            throw new Error("No locales found in src/i18n/types.ts");
-          }
-
-          fs.appendFileSync(
-            process.env.GITHUB_OUTPUT,
-            `matrix=${JSON.stringify({ locale: locales })}\n`,
-          );
-          NODE
-
   build:
-    name: Build ${{ matrix.locale }} image
+    name: Build and push image
     runs-on: ubuntu-latest
-    needs: locales
-    strategy:
-      fail-fast: false
-      matrix: ${{ fromJson(needs.locales.outputs.matrix) }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -81,8 +40,6 @@ jobs:
         with:
           context: .
           push: true
-          build-args: |
-            BUILD_LOCALE=${{ matrix.locale }}
           tags: |
-            ${{ steps.meta.outputs.image }}:latest-${{ matrix.locale }}
-            ${{ steps.meta.outputs.image }}:${{ steps.meta.outputs.sha_short }}-${{ matrix.locale }}
+            ${{ steps.meta.outputs.image }}:latest
+            ${{ steps.meta.outputs.image }}:${{ steps.meta.outputs.sha_short }}
