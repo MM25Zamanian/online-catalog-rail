@@ -4,7 +4,9 @@
 Run Lighthouse on the production server URL with the same baseline as local production output and avoid false negatives.
 
 ## 1) Preconditions
-- Build locale and URL path must match.
+- Single build must include both `/` (English) and `/tr` (Turkish).
+- `/en` must redirect to `/`.
+- Unknown locale prefixes (e.g. `/fa`) must redirect to `/`.
 - Server must serve the exported directory without rewriting `_next/static` incorrectly.
 - No 4xx/5xx for HTML, JS, CSS, fonts, and images required by the audited page.
 
@@ -17,22 +19,27 @@ Run Lighthouse on the production server URL with the same baseline as local prod
 Use these checks before Lighthouse:
 
 ```bash
-curl -I https://<host>/<locale>/
-curl -I https://<host>/<locale>/_next/static/css/<file>.css
-curl -I https://<host>/<locale>/_next/static/chunks/<file>.js
-curl -I https://<host>/<locale>/_next/static/media/<file>.woff2
+curl -I https://<host>/
+curl -I https://<host>/tr/
+curl -I https://<host>/en/
+curl -I https://<host>/fa/
+curl -I https://<host>/_next/static/css/<file>.css
+curl -I https://<host>/_next/static/chunks/<file>.js
+curl -I https://<host>/_next/static/media/<file>.woff2
 ```
 
 Expected:
-- HTML returns 200 and no long-lived immutable cache.
+- `/` and `/tr` return 200.
+- `/en` and invalid locales return 301 to `/`.
 - `_next/static/*` returns 200 with long-lived immutable cache.
 
 ## 4) Run Lighthouse
 ```bash
-node scripts/lighthouse-codex.mjs --url https://<host>/<locale>/
+node scripts/lighthouse-codex.mjs --url https://<host>/
+node scripts/lighthouse-codex.mjs --url https://<host>/tr/
 ```
 
 ## 5) Acceptance Criteria
 - `errors-in-console` has no 404 for critical assets.
-- No systematic 404 under `<locale>/_next/static/*`.
+- No systematic 404 under `/_next/static/*`.
 - `network-dependency-tree-insight` and `render-blocking-insight` are evaluated only after 404 issues are resolved.
