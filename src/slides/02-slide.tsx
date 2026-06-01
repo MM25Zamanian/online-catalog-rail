@@ -2,7 +2,7 @@ import { Slide } from "@/components/slide";
 import Image from "next/image";
 import TrafficLights from "#/traffic-lights.webp";
 import { cn } from "@/lib/utils";
-import { getBuildLocale, type Dictionary } from "@/i18n";
+import type { Dictionary, Locale } from "@/i18n";
 import { LineBreak } from "@/components/line-break";
 
 function ListItem({ content }: { content: string }) {
@@ -15,13 +15,12 @@ function ListItem({ content }: { content: string }) {
 }
 
 type Slide02Props = {
+  locale: Locale;
   brand: Dictionary["brand"];
   copy: Dictionary["slide02"];
 };
 
-const locale = getBuildLocale();
-
-export function Slide02({ brand, copy }: Slide02Props) {
+export function Slide02({ locale, brand, copy }: Slide02Props) {
   return (
     <Slide slideIndex={1} motionProfile="content" className="bg-background">
       <div data-parallax="bg" className="absolute bg-background -bottom-2 -end-24 aspect-[1/2] h-[40rem]">

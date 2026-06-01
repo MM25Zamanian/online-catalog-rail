@@ -1,8 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Roboto } from "next/font/google";
-import { getBuildLocale, getDictionary } from "@/i18n";
+import { getDictionary } from "@/i18n";
 import "./globals.css";
-import Link from "next/link";
 import { InternationalizationToggleButton } from "@/components/i18n-toggle-button";
 
 const roboto = Roboto({
@@ -10,19 +9,22 @@ const roboto = Roboto({
   subsets: ["latin"],
 });
 
-const locale = getBuildLocale();
-const dictionary = getDictionary();
+const englishDictionary = getDictionary("en");
 
 export const viewport: Viewport = {
   themeColor: "#03162a",
 };
 
 export const metadata: Metadata = {
-  ...dictionary.metadata,
-  appleWebApp: {
-    // capable: true,
-    // statusBarStyle: "black-translucent",
+  ...englishDictionary.metadata,
+  alternates: {
+    canonical: "/",
+    languages: {
+      en: "/",
+      tr: "/tr",
+    },
   },
+  appleWebApp: {},
 };
 
 export default function RootLayout({
@@ -32,7 +34,7 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang={locale}
+      lang="en"
       dir="ltr"
       className={`${roboto.variable} h-full overflow-hidden antialiased`}
     >

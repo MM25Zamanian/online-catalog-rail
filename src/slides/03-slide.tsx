@@ -2,19 +2,17 @@ import { Slide } from "@/components/slide";
 import Logo from "#/logo.webp";
 import TrainBackground from "#/monochrome-freight-train-on-tracks.webp";
 import Image from "next/image";
-import type { Dictionary } from "@/i18n";
+import type { Dictionary, Locale } from "@/i18n";
 import { AwardIcon, GlobeIcon, TrainIcon, UsersIcon } from "@/components/icons";
 import { cn } from "@/lib/utils";
-import { getBuildLocale } from "@/i18n";
 import { LineBreak } from "@/components/line-break";
 import { NumberTicker } from "@/components/number-ticker";
 
 type Slide03Props = {
+  locale: Locale;
   brand: Dictionary["brand"];
   copy: Dictionary["slide03"];
 };
-
-const locale = getBuildLocale();
 
 const statIcons = {
   award: AwardIcon,
@@ -23,7 +21,7 @@ const statIcons = {
   users: UsersIcon,
 } as const;
 
-export function Slide03({ brand, copy }: Slide03Props) {
+export function Slide03({ locale, brand, copy }: Slide03Props) {
   const titleParts = copy.title.split(" ");
   const hasSplitTitle = locale === "en" && titleParts.length === 2;
 

@@ -2,21 +2,20 @@ import { Slide } from "@/components/slide";
 import Logo from "#/logo.webp";
 import Image from "next/image";
 import type { ReactNode } from "react";
-import { getBuildLocale, type Dictionary } from "@/i18n";
+import type { Dictionary, Locale } from "@/i18n";
 import { ShipIcon, StoreIcon, TrainIcon, TruckIcon } from "@/components/icons";
 import { cn } from "@/lib/utils";
 import { LineBreak } from "@/components/line-break";
 import { FirstSlideHeroImage } from "@/components/01-slide-hero-image";
 
 type Slide01Props = {
+  locale: Locale;
   brand: Dictionary["brand"];
   copy: Dictionary["slide01"];
   children: ReactNode;
 };
 
-const locale = getBuildLocale();
-
-export function Slide01({ brand, copy, children }: Slide01Props) {
+export function Slide01({ locale, brand, copy, children }: Slide01Props) {
   return (
     <Slide slideIndex={0} motionProfile="hero" className="bg-primary">
       {children}
