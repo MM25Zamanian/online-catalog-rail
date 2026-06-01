@@ -8,7 +8,9 @@ function normalizeBasePath(value: string): string {
 }
 
 const explicitBasePath = process.env.NEXT_PUBLIC_BASE_PATH;
-const localeBasePath = process.env.BUILD_LOCALE ? `/${process.env.BUILD_LOCALE}` : "";
+const localeBasePath = process.env.BUILD_LOCALE
+  ? `/${process.env.BUILD_LOCALE}`
+  : "";
 const basePath = normalizeBasePath(explicitBasePath ?? localeBasePath);
 
 const nextConfig: NextConfig = {

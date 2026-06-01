@@ -51,9 +51,15 @@ export function Slide06({ copy }: Slide06Props) {
       }
     };
 
-    document.addEventListener(CATALOG_MOTION_EVENT, handleMotionUpdate as EventListener);
+    document.addEventListener(
+      CATALOG_MOTION_EVENT,
+      handleMotionUpdate as EventListener
+    );
     return () => {
-      document.removeEventListener(CATALOG_MOTION_EVENT, handleMotionUpdate as EventListener);
+      document.removeEventListener(
+        CATALOG_MOTION_EVENT,
+        handleMotionUpdate as EventListener
+      );
     };
   }, []);
 
@@ -71,17 +77,21 @@ export function Slide06({ copy }: Slide06Props) {
               ? { opacity: 1, scale: 1, y: 0 }
               : { opacity: 0, scale: 0.96, y: 22 }
           }
-          transition={{ duration: prefersReducedMotion ? 0.01 : 0.92, ease: [0.18, 0.84, 0.22, 1] }}
+          transition={{
+            duration: prefersReducedMotion ? 0.01 : 0.92,
+            ease: [0.18, 0.84, 0.22, 1],
+          }}
         >
           <m.div
             className="text-xl font-black text-primary z-20 absolute top-34 start-36 flex flex-col items-center justify-center"
             initial={false}
             animate={
-              shouldReveal
-                ? { opacity: 1, y: 0 }
-                : { opacity: 0, y: 16 }
+              shouldReveal ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }
             }
-            transition={{ duration: prefersReducedMotion ? 0.01 : 0.8, ease: [0.18, 0.84, 0.22, 1] }}
+            transition={{
+              duration: prefersReducedMotion ? 0.01 : 0.8,
+              ease: [0.18, 0.84, 0.22, 1],
+            }}
           >
             <LocationIcon className="size-8" />
             <span className="uppercase">{copy.countryLabel}</span>
@@ -106,7 +116,7 @@ export function Slide06({ copy }: Slide06Props) {
               duration: prefersReducedMotion ? 0.01 : 0.86,
               ease: [0.18, 0.84, 0.22, 1],
             }}
-          > 
+          >
             <IranRouteLines
               className="absolute start-0 bottom-0 h-full w-full"
               startPoint={{ x: 470, y: 280 }}
@@ -124,11 +134,12 @@ export function Slide06({ copy }: Slide06Props) {
             className="font-black text-3xl flex flex-col uppercase ps-1"
             initial={false}
             animate={
-              shouldReveal
-                ? { opacity: 1, y: 0 }
-                : { opacity: 0, y: 18 }
+              shouldReveal ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 }
             }
-            transition={{ duration: prefersReducedMotion ? 0.01 : 0.78, ease: [0.18, 0.84, 0.22, 1] }}
+            transition={{
+              duration: prefersReducedMotion ? 0.01 : 0.78,
+              ease: [0.18, 0.84, 0.22, 1],
+            }}
           >
             <span className="text-primary">{copy.heading.start}</span>
             <span className="text-secondary">{copy.heading.accent}</span>
@@ -136,23 +147,9 @@ export function Slide06({ copy }: Slide06Props) {
 
           <LineBreak data-reveal="body" data-stagger={1} className="mt-4" />
 
-          <m.div
-            data-reveal="body"
-            data-stagger={2}
-            className="flex gap-2"
-            initial={false}
-            animate={
-              shouldReveal
-                ? { opacity: 1 }
-                : { opacity: 0 }
-            }
-            transition={{
-              duration: prefersReducedMotion ? 0.01 : 0.5,
-              ease: [0.18, 0.84, 0.22, 1],
-            }}
-          >
+          <div data-reveal="body" data-stagger={2} className="flex gap-2">
             <div className="flex-1 pt-4 pb-2 flex flex-col">
-              <h2 className="flex gap-1 uppercase items-center font-bold mb-2 tracking-tight text-primary">
+              <h2 className="flex gap-1 text-sm uppercase items-center font-bold mb-2 tracking-tight text-primary">
                 <LocationIcon className="size-8 text-secondary" />
                 <span>{copy.terminalsTitle}</span>
               </h2>
@@ -164,10 +161,15 @@ export function Slide06({ copy }: Slide06Props) {
               ))}
             </div>
 
-            <hr className="border-t-0 border-e w-px h-full border-e-secondary" />
+            <LineBreak
+              orientation="horizontal"
+              isBubble={false}
+              className="-mt-2"
+              direction="start"
+            />
 
             <div className="flex-1 pt-4 pb-2 flex flex-col">
-              <h2 className="flex gap-1 uppercase items-center font-bold mb-2 tracking-tight text-primary">
+              <h2 className="flex gap-1 text-sm uppercase items-center font-bold mb-2 tracking-tight text-primary">
                 <GlobeIcon className="size-8 text-secondary" />
                 <span>{copy.destinationsTitle}</span>
               </h2>
@@ -178,7 +180,7 @@ export function Slide06({ copy }: Slide06Props) {
                 </div>
               ))}
             </div>
-          </m.div>
+          </div>
         </div>
       </Slide>
     </LazyMotion>

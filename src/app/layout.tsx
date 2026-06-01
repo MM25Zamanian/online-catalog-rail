@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from "next";
 import { Roboto } from "next/font/google";
 import { getBuildLocale, getDictionary } from "@/i18n";
 import "./globals.css";
+import Link from "next/link";
+import { InternationalizationToggleButton } from "@/components/i18n-toggle-button";
 
 const roboto = Roboto({
   variable: "--font-roboto",
@@ -34,7 +36,10 @@ export default function RootLayout({
       dir="ltr"
       className={`${roboto.variable} h-full overflow-hidden antialiased`}
     >
-      <body className="h-full overflow-hidden">{children}</body>
+      <body className="h-full overflow-hidden">
+        {children}
+        <InternationalizationToggleButton />
+      </body>
     </html>
   );
 }
