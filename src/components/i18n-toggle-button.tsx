@@ -1,21 +1,34 @@
 "use client";
 
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useMemo } from "react";
 
 function getLocaleFromPathname(pathname: string): "en" | "tr" {
   return pathname === "/tr" || pathname.startsWith("/tr/") ? "tr" : "en";
 }
 
+function normalizePathname(pathname: string): string {
+  if (pathname === "/") return pathname;
+  return pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;
+}
+
 function getTargetPathname(pathname: string, locale: "en" | "tr"): string {
+  const normalizedPathname = normalizePathname(pathname);
+
   if (locale === "en") {
-    return pathname === "/" ? "/tr" : `/tr${pathname}`;
+    return normalizedPathname === "/" ? "/tr" : `/tr${normalizedPathname}`;
   }
 
-  return pathname.replace(/^\/tr(\/|$)/, "/");
+  if (normalizedPathname === "/tr") return "/";
+  if (normalizedPathname.startsWith("/tr/")) {
+    return normalizedPathname.replace(/^\/tr/, "");
+  }
+
+  return "/";
 }
 
 export function InternationalizationToggleButton() {
+  const router = useRouter();
   const pathname = usePathname();
   const locale = getLocaleFromPathname(pathname);
 
@@ -28,11 +41,11 @@ export function InternationalizationToggleButton() {
       onClick={() => {
         if (typeof window === "undefined") return;
 
-        const url = new URL(window.location.href);
-        url.pathname = getTargetPathname(url.pathname, locale);
-        window.location.assign(`${url.pathname}${url.search}${url.hash}`);
+        const targetPath = getTargetPathname(pathname, locale);
+        const nextUrl = `${targetPath}${window.location.search}${window.location.hash}`;
+        router.push(nextUrl);
       }}
-      className="border flex items-center gap-1 border-primary fixed bottom-4 end-8 px-4 py-2 rounded-xl bg-background/70 backdrop-blur-2xl"
+      className="border flex items-center gap-1 border-primary fixed bottom-4 end-8 px-4 py-2 z-50 rounded-xl bg-background/70 backdrop-blur-2xl"
     >
       <span className="text-xs text-primary">{label}</span>
       <span className="text-lg">{icon}</span>
