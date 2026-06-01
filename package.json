@@ -6,16 +6,14 @@
     "dev": "rm -rf .next && next dev --webpack",
     "build": "next build --webpack",
     "build:static": "next build --webpack",
-    "build:en": "BUILD_LOCALE=en next build --webpack",
-    "build:tr": "BUILD_LOCALE=tr next build --webpack",
     "typecheck": "tsc --noEmit",
     "generate:world-map": "node scripts/generate-world-map.mjs",
     "start": "next start",
     "lint": "eslint",
     "lighthouse:codex": "node scripts/lighthouse-codex.mjs",
     "lighthouse:codex:local": "node scripts/lighthouse-codex.mjs --local --dir out --port 4173",
-    "lighthouse:codex:local:en": "pnpm build:en && node scripts/lighthouse-codex.mjs --local --dir out --port 4173 --path /en/",
-    "lighthouse:codex:local:tr": "pnpm build:tr && node scripts/lighthouse-codex.mjs --local --dir out --port 4173 --path /tr/"
+    "lighthouse:codex:local:en": "pnpm build && node scripts/lighthouse-codex.mjs --local --dir out --port 4173 --path /",
+    "lighthouse:codex:local:tr": "pnpm build && node scripts/lighthouse-codex.mjs --local --dir out --port 4173 --path /tr/"
   },
   "dependencies": {
     "motion": "^12.40.0",
