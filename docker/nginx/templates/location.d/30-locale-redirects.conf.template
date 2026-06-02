@@ -8,8 +8,6 @@ location = /en/ {
 }
 
 # Unsupported locale prefixes are redirected to English root.
-location ~ ^/([a-z]{2})(?:/|$) {
-  if ($1 !~ ^(en|tr)$) {
-    return 301 /;
-  }
+location ~ ^/(?!en(?:/|$)|tr(?:/|$))[a-z][a-z]/?$ {
+  return 301 /;
 }
